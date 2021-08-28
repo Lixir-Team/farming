@@ -1,3 +1,5 @@
+from tests.conftest import INITIAL_SUPPLY
+
 WEEK = 86400 * 7
 YEAR = 365 * 86400
 
@@ -31,9 +33,9 @@ def test_mining_epoch(accounts, chain, distributor):
 
 
 def test_available_to_distribute(accounts, chain, distributor):
-    assert distributor.available_to_distribute() == 6000000 * 10 ** 18
+    assert distributor.available_to_distribute() == INITIAL_SUPPLY
 
     chain.sleep(86401)
     distributor.update_mining_parameters({"from": accounts[0]})
 
-    assert distributor.available_to_distribute() > 6000000 * 10 ** 18
+    assert distributor.available_to_distribute() > INITIAL_SUPPLY

@@ -72,7 +72,7 @@ def set_initial_params(_init_supply: uint256):
     self.start_epoch_time = block.timestamp + DISTRIBUTION_DELAY - RATE_REDUCTION_TIME
     self.mining_epoch = -1
     self.rate = 0
-    self.start_epoch_supply = _init_supply
+    self.start_epoch_supply = 0 # _init_supply
 
 
 @internal
@@ -110,7 +110,7 @@ def _available_to_distribute() -> uint256:
 @view
 def available_to_distribute() -> uint256:
     """
-    @notice Current number of tokens in existence (claimed or unclaimed)
+    @notice Current number of tokens distributed by this contract (claimed or unclaimed)
     """
     return self._available_to_distribute()
 

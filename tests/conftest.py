@@ -6,10 +6,10 @@ from brownie import (
 )
 from brownie_tokens import ERC20
 
-# YEAR = 365 * 86400
+YEAR = 365 * 86400
 # INITIAL_RATE = 274_815_283
-# YEAR_1_SUPPLY = INITIAL_RATE * 10 ** 18 // YEAR * YEAR
-# INITIAL_SUPPLY = 1_303_030_303
+YEAR_1_SUPPLY = 759720 * 10 ** 18 # INITIAL_RATE * 10 ** 18 // YEAR * YEAR
+INITIAL_SUPPLY = 6000000 # 1_303_030_303
 
 
 def approx(a, b, precision=1e-10):
@@ -32,20 +32,16 @@ def isolation_setup(fn_isolation):
 # helper functions as fixtures
 
 
-# @pytest.fixture(scope="module")
-# def theoretical_supply(chain, token):
-#     def _fn():
-#         epoch = token.mining_epoch()
-#         q = 1 / 2 ** 0.25
-#         S = INITIAL_SUPPLY * 10 ** 18
-#         if epoch > 0:
-#             S += int(YEAR_1_SUPPLY * (1 - q ** epoch) / (1 - q))
-#         S += int(YEAR_1_SUPPLY // YEAR * q ** epoch) * (
-#             chain[-1].timestamp - token.start_epoch_time()
-#         )
-#         return S
+@pytest.fixture(scope="module")
+def theoretical_distribution(chain, distributor):
+    def _fn():
+        epoch = distributor.mining_epoch()
+        q = 13/15
+        return int(YEAR_1_SUPPLY // YEAR * q ** epoch) * (
+            chain[-1].timestamp - distributor.start_epoch_time()
+        )
 
-#     yield _fn
+    yield _fn
 
 
 # account aliases
@@ -81,7 +77,7 @@ def receiver(accounts):
 
 @pytest.fixture(scope="module")
 def token(ERC20, accounts):
-    yield ERC20.deploy("Lixir Token", "LIX", 18, 10000000 * 10 ** 18, {"from": accounts[0]})
+    yield ERC20.deploy("Lixir Token", "LIX", 18, INITIAL_SUPPLY * 10 ** 18, {"from": accounts[0]})
 
 
 @pytest.fixture(scope="module")
@@ -104,8 +100,8 @@ def gauge_controller(GaugeController, accounts, token, voting_escrow):
 @pytest.fixture(scope="module")
 def distributor(LixDistributor, accounts, gauge_controller, token):
     dist = LixDistributor.deploy(token, gauge_controller, accounts[0], {"from": accounts[0]})
-    token.approve(dist, 6000000 * 10 ** 18, {"from":accounts[0]})
-    dist.set_initial_params(6000000 * 10 ** 18, {"from": accounts[0]})
+    token.approve(dist, INITIAL_SUPPLY * 10 ** 18, {"from":accounts[0]})
+    dist.set_initial_params(INITIAL_SUPPLY * 10 ** 18, {"from": accounts[0]})
     yield dist
 
 
