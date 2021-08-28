@@ -33,9 +33,9 @@ def test_mining_epoch(accounts, chain, distributor):
 
 
 def test_available_to_distribute(accounts, chain, distributor):
-    assert distributor.available_to_distribute() == INITIAL_SUPPLY
+    assert distributor.available_to_distribute() == 0
 
     chain.sleep(86401)
     distributor.update_mining_parameters({"from": accounts[0]})
 
-    assert distributor.available_to_distribute() > INITIAL_SUPPLY
+    assert distributor.available_to_distribute() > 0
