@@ -105,5 +105,5 @@ class StateMachine:
             assert self.controller.gauge_relative_weight(gauge) == expected
 
 
-def test_gauge(state_machine, LiquidityGauge, accounts, gauge_controller, mock_lp_token, minter):
-    state_machine(StateMachine, LiquidityGauge, accounts, gauge_controller, mock_lp_token, minter)
+def test_gauge(state_machine, VaultGauge, accounts, gauge_controller, lixir_vault, distributor):
+    state_machine(StateMachine, VaultGauge, accounts, gauge_controller, lixir_vault, distributor)

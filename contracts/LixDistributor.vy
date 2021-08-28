@@ -102,17 +102,17 @@ def _update_mining_parameters():
 
 @internal
 @view
-def _avaialable_to_distribute() -> uint256:
+def _available_to_distribute() -> uint256:
     return self.start_epoch_supply + (block.timestamp - self.start_epoch_time) * self.rate
 
 
 @external
 @view
-def avaialable_to_distribute() -> uint256:
+def available_to_distribute() -> uint256:
     """
     @notice Current number of tokens in existence (claimed or unclaimed)
     """
-    return self._avaialable_to_distribute()
+    return self._available_to_distribute()
 
 
 @external
