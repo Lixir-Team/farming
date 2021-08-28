@@ -8,10 +8,8 @@ def to_int(*args):
     return [int(a) for a in args]
 
 
-def test_mint(accounts, chain, mock_lp_token, gauge_controller, three_gauges, minter, token):
+def test_mint(accounts, chain, lixir_vault, gauge_controller, three_gauges, distributor, token):
     admin, bob, charlie, dan = accounts[:4]
-
-    token.set_minter(minter, {"from": admin})
 
     W = 10 ** 18
     amount = 10 ** 18
@@ -30,21 +28,23 @@ def test_mint(accounts, chain, mock_lp_token, gauge_controller, three_gauges, mi
 
     # Transfer tokens to Bob, Charlie and Dan
     for user in accounts[1:4]:
-        mock_lp_token.transfer(user, amount, {"from": admin})
+        # lixir_vault.transfer(user, amount, {"from": admin})
+        lixir_vault.deposit(amount, 0, 0, 0, user, chain.time() + 10**18, {"from": user})
+
 
     chain.sleep(7 * 86400)  # For weights to activate
 
     # Bob and Charlie deposit to gauges with different weights
-    mock_lp_token.approve(three_gauges[1], amount, {"from": bob})
+    lixir_vault.approve(three_gauges[1], amount, {"from": bob})
     three_gauges[1].deposit(amount, {"from": bob})
-    mock_lp_token.approve(three_gauges[2], amount, {"from": charlie})
+    lixir_vault.approve(three_gauges[2], amount, {"from": charlie})
     three_gauges[2].deposit(amount, {"from": charlie})
 
     dt = 30 * 86400
     chain.sleep(dt)
     chain.mine()
 
-    mock_lp_token.approve(three_gauges[1], amount, {"from": dan})
+    lixir_vault.approve(three_gauges[1], amount, {"from": dan})
     three_gauges[1].deposit(amount, {"from": dan})
 
     chain.sleep(dt)
@@ -60,21 +60,21 @@ def test_mint(accounts, chain, mock_lp_token, gauge_controller, three_gauges, mi
     three_gauges[1].withdraw(amount, {"from": dan})
 
     for user in accounts[1:4]:
-        assert mock_lp_token.balanceOf(user) == amount
+        assert lixir_vault.balanceOf(user) == amount
 
     # Claim for Bob now
-    minter.mint(three_gauges[1], {"from": bob})
+    distributor.distribute(three_gauges[1], {"from": bob})
     bob_tokens = token.balanceOf(bob)
 
     chain.sleep(dt)
     chain.mine()
 
-    minter.mint(three_gauges[1], {"from": bob})  # This won't give anything
+    distributor.distribute(three_gauges[1], {"from": bob})  # This won't give anything
     assert bob_tokens == token.balanceOf(bob)
 
-    minter.mint(three_gauges[2], {"from": charlie})
+    distributor.distribute(three_gauges[2], {"from": charlie})
     charlie_tokens = token.balanceOf(charlie)
-    minter.mint(three_gauges[1], {"from": dan})
+    distributor.distribute(three_gauges[1], {"from": dan})
     dan_tokens = token.balanceOf(dan)
 
     S = bob_tokens + charlie_tokens + dan_tokens
