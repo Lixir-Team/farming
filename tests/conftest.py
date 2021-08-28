@@ -9,7 +9,7 @@ from brownie_tokens import ERC20
 YEAR = 365 * 86400
 # INITIAL_RATE = 274_815_283
 YEAR_1_SUPPLY = 759720 * 10 ** 18 # INITIAL_RATE * 10 ** 18 // YEAR * YEAR
-INITIAL_SUPPLY = 6000000 # 1_303_030_303
+INITIAL_SUPPLY = 10000000 # 1_303_030_303
 
 
 def approx(a, b, precision=1e-10):
