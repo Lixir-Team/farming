@@ -21,24 +21,24 @@ class StateMachine:
     st_value = strategy("uint64")
     st_time = strategy("uint", max_value=86400 * 365)
 
-    def __init__(self, accounts, gauge_v3, mock_lp_token):
+    def __init__(self, accounts, vault_gauge, lixir_vault):
         self.accounts = accounts
-        self.token = mock_lp_token
-        self.gauge_v3 = gauge_v3
+        self.token = lixir_vault
+        self.vault_gauge = vault_gauge
 
     def setup(self):
         self.balances = {i: 0 for i in self.accounts}
 
     def rule_deposit(self, st_account, st_value):
         """
-        Make a deposit into the `LiquidityGauge` contract.
+        Make a deposit into the `VaultGauge` contract.
 
         Because of the upper bound of `st_value` relative to the initial account
         balances, this rule should never fail.
         """
         balance = self.token.balanceOf(st_account)
 
-        self.gauge_v3.deposit(st_value, {"from": st_account})
+        self.vault_gauge.deposit(st_value, {"from": st_account})
         self.balances[st_account] += st_value
 
         assert self.token.balanceOf(st_account) == balance - st_value
@@ -50,12 +50,12 @@ class StateMachine:
         if self.balances[st_account] < st_value:
             # fail path - insufficient balance
             with brownie.reverts():
-                self.gauge_v3.withdraw(st_value, {"from": st_account})
+                self.vault_gauge.withdraw(st_value, {"from": st_account})
             return
 
         # success path
         balance = self.token.balanceOf(st_account)
-        self.gauge_v3.withdraw(st_value, {"from": st_account})
+        self.vault_gauge.withdraw(st_value, {"from": st_account})
         self.balances[st_account] -= st_value
 
         assert self.token.balanceOf(st_account) == balance + st_value
@@ -70,20 +70,20 @@ class StateMachine:
         """
         Create a new user checkpoint.
         """
-        self.gauge_v3.user_checkpoint(st_account, {"from": st_account})
+        self.vault_gauge.user_checkpoint(st_account, {"from": st_account})
 
     def invariant_balances(self):
         """
         Validate expected balances against actual balances.
         """
         for account, balance in self.balances.items():
-            assert self.gauge_v3.balanceOf(account) == balance
+            assert self.vault_gauge.balanceOf(account) == balance
 
     def invariant_total_supply(self):
         """
         Validate expected total supply against actual total supply.
         """
-        assert self.gauge_v3.totalSupply() == sum(self.balances.values())
+        assert self.vault_gauge.totalSupply() == sum(self.balances.values())
 
     def teardown(self):
         """
@@ -91,21 +91,22 @@ class StateMachine:
         """
         for account, balance in ((k, v) for k, v in self.balances.items() if v):
             initial = self.token.balanceOf(account)
-            self.gauge_v3.withdraw(balance, {"from": account})
+            self.vault_gauge.withdraw(balance, {"from": account})
 
             assert self.token.balanceOf(account) == initial + balance
 
 
-def test_state_machine(state_machine, accounts, gauge_v3, mock_lp_token, no_call_coverage):
+def test_state_machine(state_machine, accounts, vault_gauge, lixir_vault, no_call_coverage):
     # fund accounts to be used in the test
-    for acct in accounts[1:5]:
-        mock_lp_token.transfer(acct, 10 ** 21, {"from": accounts[0]})
-
-    # approve gauge_v3 from the funded accounts
     for acct in accounts[:5]:
-        mock_lp_token.approve(gauge_v3, 2 ** 256 - 1, {"from": acct})
+        # lixir_vault.transfer(acct, 10 ** 21, {"from": accounts[0]})
+        lixir_vault.deposit(10 ** 21, 0, 0, 0, acct, chain.time() + 10**18, {"from": acct})
+
+    # approve vault_gauge from the funded accounts
+    for acct in accounts[:5]:
+        lixir_vault.approve(vault_gauge, 2 ** 256 - 1, {"from": acct})
 
     # because this is a simple state machine, we use more steps than normal
     settings = {"stateful_step_count": 25, "max_examples": 30}
 
-    state_machine(StateMachine, accounts[:5], gauge_v3, mock_lp_token, settings=settings)
+    state_machine(StateMachine, accounts[:5], vault_gauge, lixir_vault, settings=settings)
