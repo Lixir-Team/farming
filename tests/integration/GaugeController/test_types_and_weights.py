@@ -22,12 +22,12 @@ class StateMachine:
     st_gauge_weight = strategy("uint", min_value=10 ** 17, max_value=10 ** 19)
     st_type_weight = strategy("uint", min_value=10 ** 17, max_value=10 ** 19)
 
-    def __init__(self, LiquidityGauge, accounts, gauge_controller, mock_lp_token, minter):
-        self.LiquidityGauge = LiquidityGauge
+    def __init__(self, VaultGauge, accounts, gauge_controller, lixir_vault, distributor):
+        self.VaultGauge = VaultGauge
         self.accounts = accounts
 
-        self.lp_token = mock_lp_token
-        self.minter = minter
+        self.lixir_vault = lixir_vault
+        self.distributor = distributor
         self.controller = gauge_controller
 
     def setup(self):
@@ -59,8 +59,8 @@ class StateMachine:
             return
 
         gauge_type = int(st_type * (len(self.type_weights)))
-        gauge = self.LiquidityGauge.deploy(
-            self.lp_token, self.minter, self.accounts[0], {"from": self.accounts[0]}
+        gauge = self.VaultGauge.deploy(
+            self.lixir_vault, self.distributor, self.accounts[0], {"from": self.accounts[0]}
         )
 
         self.controller.add_gauge(gauge, gauge_type, st_gauge_weight, {"from": self.accounts[0]})
