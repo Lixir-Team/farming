@@ -28,7 +28,6 @@ def test_mint(accounts, chain, lixir_vault, gauge_controller, three_gauges, dist
 
     # Transfer tokens to Bob, Charlie and Dan
     for user in accounts[1:4]:
-        # lixir_vault.transfer(user, amount, {"from": admin})
         lixir_vault.deposit(amount, 0, 0, 0, user, chain.time() + 10**18, {"from": user})
 
 
