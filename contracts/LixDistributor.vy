@@ -52,15 +52,17 @@ start_epoch_supply: uint256
 lix: public(address)
 controller: public(address)
 admin: public(address)
+emergency_return: public(address)
 
 # user -> gauge -> value
 distributed: public(HashMap[address, HashMap[address, uint256]])
 
 @external
-def __init__(_lix: address, _controller: address, _admin: address):
+def __init__(_lix: address, _controller: address, _admin: address, _emergency_return: address):
     self.lix = _lix
     self.controller = _controller
     self.admin = _admin
+    self.emergency_return = _emergency_return
 
 
 @external
@@ -243,21 +245,21 @@ def dist_many(gauge_addrs: address[8]):
 
 
 @external
-def recover_balance() -> bool:
+def recover_balance(_coin: address) -> bool:
     """
     @notice Recover ERC20 tokens from this contract
-    @dev Tokens are sent to the admin address.
+    @dev Tokens are sent to the emergency return address.
+    @param _coin Token address
     @return bool success
     """
     assert msg.sender == self.admin
-    _lix: address = self.lix
 
-    amount: uint256 = ERC20(_lix).balanceOf(self)
+    amount: uint256 = ERC20(_coin).balanceOf(self)
     response: Bytes[32] = raw_call(
-        _lix,
+        _coin,
         concat(
             method_id("transfer(address,uint256)"),
-            convert(self.admin, bytes32),
+            convert(self.emergency_return, bytes32),
             convert(amount, bytes32),
         ),
         max_outsize=32,
