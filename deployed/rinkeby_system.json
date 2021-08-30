@@ -1,8 +1,8 @@
 {
   "lix": "0x76d9A5070d8117e8147E2ca4bb943849d60C9655",
   "registry": "None",
-  "escrow": "0xDBeB62F4a995a14735fc4024b69d11562b6Bb6a5",
-  "fee_distributor": "0x8DA82D8f58e57a0bAa4100882Fbc205F5dBd3D00",
-  "gauge_controller": "0x81258a6e409eec2ad227C55EB5C29c4eD9cEDBF2",
-  "lix_distributor": "0x66Da5cA0C4e4f73Eb247D1B59cDDD59fabbe1D0a"
+  "escrow": "0x3db8CF1Bd9e01D834aE9ad89Bdf43ea4e9740421",
+  "fee_distributor": "0x9282C47685b86cB9eAC34b7b7f90De307DB5Ef9e",
+  "gauge_controller": "0xc48F55732Af2972d26420253Bc29654cA210e001",
+  "lix_distributor": "0x1dc3CB9477060457C29BE70F396976722C3795B0"
 }

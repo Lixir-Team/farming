@@ -141,10 +141,11 @@ def get_accounts():
     deploy_config = json.loads(f.read())
     f.close()
     fee_dist_admin = deploy_config["fee_dist_admin"]
+    lix_dist_admin = deploy_config["fee_dist_admin"]
     gauge_admin = deploy_config["gauge_admin"]
     emergency_return = deploy_config["emergency_return"]
     deployer = accounts.load(f"lix-{network}")
-    return StakingAccounts(fee_dist_admin, gauge_admin, emergency_return, deployer)
+    return StakingAccounts(fee_dist_admin, lix_dist_admin, gauge_admin, emergency_return, deployer)
 
 
 def connect_dependencies(dep_config: StakingDependenciesConfig):
