@@ -30,7 +30,7 @@ StakingSystemConfig = namedtuple(
 
 StakingAccounts = namedtuple(
     "LixirAccounts",
-    ["fee_dist_admin", "gauge_admin", "emergency_return", "deployer"],
+    ["fee_dist_admin", "lix_dist_admin", "gauge_admin", "emergency_return", "deployer"],
 )
 
 class StakingSystem:
@@ -51,6 +51,7 @@ class StakingSystem:
         
         # accounts
         self.fee_dist_admin = staking_accounts.fee_dist_admin
+        self.lix_dist_admin = staking_accounts.lix_dist_admin
         self.gauge_admin = staking_accounts.gauge_admin
         self.emergency_return = staking_accounts.emergency_return
         self.deployer = staking_accounts.deployer
@@ -68,11 +69,11 @@ class StakingSystem:
 
     @classmethod
     def deploy(cls, lix, registry, staking_accounts: StakingAccounts):
-        fee_dist_admin, gauge_admin, emergency_return, deployer = staking_accounts
+        fee_dist_admin, lix_dist_admin, gauge_admin, emergency_return, deployer = staking_accounts
         escrow = VotingEscrow.deploy(lix, "Vote-escrowed LIX", "veLIX", "veLIX_0.99", {"from": deployer})
         fee_distributor = FeeDistributor.deploy(escrow, 0, lix, fee_dist_admin, emergency_return, {"from": deployer})
         gauge_controller = GaugeController.deploy(lix, escrow, {"from": deployer})
-        lix_distributor = LixDistributor.deploy(lix, gauge_controller, {"from": deployer}) # should I 
+        lix_distributor = LixDistributor.deploy(lix, gauge_controller, lix_dist_admin, emergency_return, {"from": deployer}) # should I 
         
         gauge_controller.add_type(b"Liquidity", {"from": deployer})
         gauge_controller.change_type_weight(0, 10 ** 18, {"from": deployer})
@@ -134,6 +135,7 @@ def get_accounts():
                 accounts[1],
                 accounts[2],
                 accounts[3],
+                accounts[4],
             )
     f = open(f"deploy_config_{network}.json", "r")
     deploy_config = json.loads(f.read())
