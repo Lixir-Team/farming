@@ -111,9 +111,6 @@ integrate_fraction: public(HashMap[address, uint256])
 
 distribution_rate: public(uint256) # inflation_rate: public(uint256)
 
-# user -> [uint128 claimable amount][uint128 claimed amount]
-claim_data: HashMap[address, HashMap[address, uint256]]
-
 # Checker for whitelisted (smart contract) wallets which are allowed to deposit
 # The goal is to prevent tokenizing the escrow
 future_smart_wallet_checker: public(address)
@@ -241,8 +238,6 @@ def _checkpoint(addr: address):
     new_rate: uint256 = rate
     prev_future_epoch: uint256 = self.future_epoch_time
     if prev_future_epoch >= _period_time:
-        self.distribution_rate = new_rate
-
         _dist: address = self.distributor
         self.future_epoch_time = Distributor(self.distributor).future_epoch_time_write()
         new_rate = Distributor(self.distributor).rate()

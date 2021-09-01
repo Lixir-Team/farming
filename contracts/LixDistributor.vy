@@ -63,14 +63,6 @@ def __init__(_lix: address, _controller: address, _admin: address, _emergency_re
     self.controller = _controller
     self.admin = _admin
     self.emergency_return = _emergency_return
-
-
-@external
-def set_initial_params(_init_supply: uint256):
-    assert(self.admin == msg.sender) # dev: only admin can initialize
-    assert(ERC20(self.lix).transferFrom(msg.sender, self, _init_supply)) # dev: token failed to transfer
-    self.initial_supply = _init_supply
-
     self.start_epoch_time = block.timestamp + DISTRIBUTION_DELAY - RATE_REDUCTION_TIME
     self.mining_epoch = -1
     self.rate = 0
