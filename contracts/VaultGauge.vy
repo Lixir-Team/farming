@@ -32,6 +32,14 @@ interface VotingEscrow:
 interface ERC20Extended:
     def symbol() -> String[26]: view
 
+# Interface for checking whether address belongs to a whitelisted
+# type of a smart wallet.
+# When new types are added - the whole contract is changed
+# The check() method is modifying to be able to use caching
+# for individual wallet addresses
+interface SmartWalletChecker:
+    def check(addr: address) -> bool: nonpayable
+
 
 event Deposit:
     provider: indexed(address)
@@ -103,8 +111,10 @@ integrate_fraction: public(HashMap[address, uint256])
 
 distribution_rate: public(uint256) # inflation_rate: public(uint256)
 
-# user -> [uint128 claimable amount][uint128 claimed amount]
-claim_data: HashMap[address, HashMap[address, uint256]]
+# Checker for whitelisted (smart contract) wallets which are allowed to deposit
+# The goal is to prevent tokenizing the escrow
+future_smart_wallet_checker: public(address)
+smart_wallet_checker: public(address) # veCRV uses this on mainnet: 0xca719728ef172d0961768581fdf35cb116e0b7a4
 
 admin: public(address)
 future_admin: public(address)  # Can and will be a smart contract
@@ -154,6 +164,39 @@ def integrate_checkpoint() -> uint256:
     return self.period_timestamp[self.period]
 
 
+@external
+def commit_smart_wallet_checker(addr: address):
+    """
+    @notice Set an external contract to check for approved smart contract wallets
+    @param addr Address of Smart contract checker
+    """
+    assert msg.sender == self.admin
+    self.future_smart_wallet_checker = addr
+
+
+@external
+def apply_smart_wallet_checker():
+    """
+    @notice Apply setting external contract to check approved smart contract wallets
+    """
+    assert msg.sender == self.admin
+    self.smart_wallet_checker = self.future_smart_wallet_checker
+
+
+@internal
+def assert_not_contract(addr: address):
+    """
+    @notice Check if the call is from a whitelisted smart contract, revert if not
+    @param addr Address to be checked
+    """
+    if addr.is_contract:
+        checker: address = self.smart_wallet_checker
+        if checker != ZERO_ADDRESS:
+            if SmartWalletChecker(checker).check(addr):
+                return
+        raise "Smart contract depositors not allowed"
+
+
 @internal
 def _update_liquidity_limit(addr: address, l: uint256, L: uint256):
     """
@@ -195,8 +238,6 @@ def _checkpoint(addr: address):
     new_rate: uint256 = rate
     prev_future_epoch: uint256 = self.future_epoch_time
     if prev_future_epoch >= _period_time:
-        self.distribution_rate = new_rate
-
         _dist: address = self.distributor
         self.future_epoch_time = Distributor(self.distributor).future_epoch_time_write()
         new_rate = Distributor(self.distributor).rate()
@@ -301,14 +342,13 @@ def kick(addr: address):
 
 @external
 @nonreentrant('lock')
-
 def deposit(_value: uint256, _addr: address = msg.sender, args: Bytes[128] = b""):
     """
     @notice Deposit `_value` LP tokens
     @param _value Number of tokens to deposit
     @param _addr Address to deposit for
     """
-
+    self.assert_not_contract(msg.sender)
     self._checkpoint(_addr)
 
     if _value != 0:
@@ -391,6 +431,7 @@ def transfer(_to : address, _value : uint256) -> bool:
     @param _to The address to transfer to.
     @param _value The amount to be transferred.
     """
+    self.assert_not_contract(_to)
     self._transfer(msg.sender, _to, _value)
 
     return True
@@ -405,6 +446,7 @@ def transferFrom(_from : address, _to : address, _value : uint256) -> bool:
      @param _to address The address which you want to transfer to
      @param _value uint256 the amount of tokens to be transferred
     """
+    self.assert_not_contract(_to)
     _allowance: uint256 = self.allowance[_from][msg.sender]
     if _allowance != MAX_UINT256:
         self.allowance[_from][msg.sender] = _allowance - _value
@@ -428,6 +470,7 @@ def approve(_spender : address, _value : uint256) -> bool:
     @param _value The amount of tokens that may be transferred
     @return bool success
     """
+    self.assert_not_contract(_spender)
     self.allowance[msg.sender][_spender] = _value
     log Approval(msg.sender, _spender, _value)
 
@@ -444,6 +487,7 @@ def increaseAllowance(_spender: address, _added_value: uint256) -> bool:
     @param _added_value The amount of to increase the allowance
     @return bool success
     """
+    self.assert_not_contract(_spender)
     allowance: uint256 = self.allowance[msg.sender][_spender] + _added_value
     self.allowance[msg.sender][_spender] = allowance
 
@@ -462,6 +506,7 @@ def decreaseAllowance(_spender: address, _subtracted_value: uint256) -> bool:
     @param _subtracted_value The amount of to decrease the allowance
     @return bool success
     """
+    self.assert_not_contract(_spender)
     allowance: uint256 = self.allowance[msg.sender][_spender] - _subtracted_value
     self.allowance[msg.sender][_spender] = allowance
 
@@ -503,3 +548,4 @@ def accept_transfer_ownership():
 
     self.admin = _admin
     log ApplyOwnership(_admin)
+

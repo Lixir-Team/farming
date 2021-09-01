@@ -69,7 +69,6 @@ def receiver(accounts):
 
 # core contracts
 
-
 # @pytest.fixture(scope="module")
 # def token(ERC20CRV, accounts):
 #     yield ERC20CRV.deploy("Curve DAO Token", "CRV", 18, {"from": accounts[0]})
@@ -85,6 +84,11 @@ def voting_escrow(VotingEscrow, accounts, token):
     yield VotingEscrow.deploy(
         token, "Voting-escrowed CRV", "veCRV", "veCRV_0.99", {"from": accounts[0]}
     )
+
+
+@pytest.fixture(scope="module")
+def smart_wallet_whitelist(SmartWalletWhitelist, voting_escrow, accounts):
+    yield SmartWalletWhitelist.deploy(accounts[0], voting_escrow, {"from": accounts[0]})
 
 
 @pytest.fixture(scope="module")
@@ -148,8 +152,11 @@ def distributor(LixDistributor, accounts, gauge_controller, token):
 
 
 @pytest.fixture(scope="module")
-def vault_gauge(VaultGauge, alice, lixir_vault, distributor, accounts, chain):
-    yield VaultGauge.deploy(lixir_vault, distributor, alice, {"from": alice})
+def vault_gauge(VaultGauge, alice, lixir_vault, distributor, smart_wallet_whitelist):
+    vault = VaultGauge.deploy(lixir_vault, distributor, alice, {"from": alice})
+    vault.commit_smart_wallet_checker(smart_wallet_whitelist, {"from": alice})
+    vault.apply_smart_wallet_checker({"from": alice})
+    yield vault
 
 # @pytest.fixture(scope="module")
 # def rewards_only_gauge(RewardsOnlyGauge, alice, mock_lp_token):
