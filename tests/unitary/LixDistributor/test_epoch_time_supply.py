@@ -1,4 +1,5 @@
 import brownie
+from tests.conftest import INITIAL_SUPPLY
 
 WEEK = 86400 * 7
 YEAR = 365 * 86400
@@ -61,13 +62,12 @@ def test_distributable_in_timeframe_multiple_epochs(distributor, accounts):
         distributor.distributable_in_timeframe(creation_time, int(creation_time + YEAR * 2.1))
 
 
-def test_avaialable_to_distribute(chain, web3, distributor):
+def test_available_to_distribute(chain, web3, distributor):
     chain.sleep(WEEK)
     chain.mine()
 
     epoch_0_start = distributor.start_epoch_time_write().return_value
     rate = distributor.rate()
-    initial_supply = 6000000 * 10 ** 18
 
-    expected = initial_supply + (chain[-1].timestamp - epoch_0_start) * rate
-    assert distributor.avaialable_to_distribute() == expected
+    expected = (chain[-1].timestamp - epoch_0_start) * rate
+    assert distributor.available_to_distribute() == expected

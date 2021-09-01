@@ -23,11 +23,10 @@ class ActionEnum(IntEnum):
     Enum of possible gauge actions in a test round.
     """
 
-    vote = 0
-    deposit = 1
-    withdraw = 2
-    mint = 3
-    noop = 4
+    deposit = 0
+    withdraw = 1
+    mint = 2
+    noop = 3
 
     @classmethod
     def get_action(cls, value: int):
@@ -36,17 +35,14 @@ class ActionEnum(IntEnum):
 
 
 @pytest.fixture(scope="module", autouse=True)
-def setup(accounts, gauge_controller, mock_lp_token, minter, token, voting_escrow):
-    # general test setup
-    token.set_minter(minter, {"from": accounts[0]})
-
+def setup(accounts, gauge_controller, lixir_vault, distributor, token, voting_escrow):
     while len(accounts) < USER_COUNT:
         accounts.add()
 
     for i in range(len(accounts)):
-        mock_lp_token.transfer(accounts[i], 10 ** 22, {"from": accounts[0]})
-        token.transfer(accounts[i], 10 ** 22, {"from": accounts[0]})
-        token.approve(voting_escrow, 10 ** 22, {"from": accounts[i]})
+        lixir_vault.deposit(10**23, 0, 0, 0, accounts[i], chain.time() + 10**18, {"from": accounts[i]})
+        token.transfer(accounts[i], 10**22, {"from": accounts[0]})
+        token.approve(voting_escrow, 10 ** 23, {"from": accounts[i]})
         voting_escrow.create_lock(10 ** 22, chain.time() + 86400 * 365 * 2, {"from": accounts[i]})
 
     for i in range(TYPE_COUNT):
@@ -54,11 +50,11 @@ def setup(accounts, gauge_controller, mock_lp_token, minter, token, voting_escro
 
 
 @pytest.fixture(scope="module")
-def gauges(LiquidityGauge, accounts, gauge_controller, mock_lp_token, minter, setup):
+def gauges(VaultGauge, accounts, gauge_controller, lixir_vault, distributor, setup):
     # deploy `GAUGE_COUNT` liquidity gauges and return them as a list
     gauges = []
     for i in range(GAUGE_COUNT):
-        contract = LiquidityGauge.deploy(mock_lp_token, minter, accounts[0], {"from": accounts[0]})
+        contract = VaultGauge.deploy(lixir_vault, distributor, accounts[0], {"from": accounts[0]})
         gauge_controller.add_gauge(contract, i % TYPE_COUNT, {"from": accounts[0]})
         gauges.append(contract)
 
@@ -67,7 +63,7 @@ def gauges(LiquidityGauge, accounts, gauge_controller, mock_lp_token, minter, se
 
 @given(st_actions=strategy(f"uint[{GAUGE_COUNT}]", max_value=GAUGE_COUNT, unique=True))
 @settings(max_examples=TEST_RUNS)
-def test_scalability(accounts, gauges, gauge_controller, mock_lp_token, minter, st_actions):
+def test_scalability(accounts, gauges, gauge_controller, lixir_vault, distributor, st_actions):
 
     # handle actions is a deque, so we can rotate it to ensure each gauge has multiple actions
     st_actions = deque(st_actions)
@@ -97,11 +93,8 @@ def test_scalability(accounts, gauges, gauge_controller, mock_lp_token, minter, 
             acct = action_accounts[0]
             idx = list(accounts).index(acct)
 
-            if action == ActionEnum.vote:
-                gauge_controller.vote_for_gauge_weights(gauge, 100, {"from": last_voted[0]})
-
-            elif action == ActionEnum.deposit:
-                mock_lp_token.approve(gauge, 10 ** 17, {"from": acct})
+            if action == ActionEnum.deposit:
+                lixir_vault.approve(gauge, 10 ** 17, {"from": acct})
                 gauge.deposit(10 ** 17, {"from": acct})
                 balances[gauge][idx] += 10 ** 17
 
@@ -111,4 +104,4 @@ def test_scalability(accounts, gauges, gauge_controller, mock_lp_token, minter, 
                 balances[gauge][idx] = 0
 
             elif action == ActionEnum.mint:
-                minter.mint(gauge, {"from": acct})
+                distributor.distribute(gauge, {"from": acct})
