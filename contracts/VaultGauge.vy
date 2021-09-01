@@ -32,6 +32,14 @@ interface VotingEscrow:
 interface ERC20Extended:
     def symbol() -> String[26]: view
 
+# Interface for checking whether address belongs to a whitelisted
+# type of a smart wallet.
+# When new types are added - the whole contract is changed
+# The check() method is modifying to be able to use caching
+# for individual wallet addresses
+interface SmartWalletChecker:
+    def check(addr: address) -> bool: nonpayable
+
 
 event Deposit:
     provider: indexed(address)
