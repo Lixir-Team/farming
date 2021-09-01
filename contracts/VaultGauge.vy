@@ -192,7 +192,7 @@ def assert_not_contract(addr: address):
     @notice Check if the call is from a whitelisted smart contract, revert if not
     @param addr Address to be checked
     """
-    if addr != tx.origin:
+    if addr.is_contract:
         checker: address = self.smart_wallet_checker
         if checker != ZERO_ADDRESS:
             if SmartWalletChecker(checker).check(addr):

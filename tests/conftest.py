@@ -67,11 +67,6 @@ def receiver(accounts):
     yield accounts.at("0x0000000000000000000000000000000000031337", True)
 
 
-@pytest.fixture(scope="module")
-def smart_wallet_checker(SmartWalletChecker, accounts):
-    yield SmartWalletChecker.deploy({"from": accounts[0]})
-
-
 # core contracts
 
 # @pytest.fixture(scope="module")
@@ -89,6 +84,11 @@ def voting_escrow(VotingEscrow, accounts, token):
     yield VotingEscrow.deploy(
         token, "Voting-escrowed CRV", "veCRV", "veCRV_0.99", {"from": accounts[0]}
     )
+
+
+@pytest.fixture(scope="module")
+def smart_wallet_whitelist(SmartWalletWhitelist, voting_escrow, accounts):
+    yield SmartWalletWhitelist.deploy(accounts[0], voting_escrow, {"from": accounts[0]})
 
 
 @pytest.fixture(scope="module")
@@ -152,9 +152,9 @@ def distributor(LixDistributor, accounts, gauge_controller, token):
 
 
 @pytest.fixture(scope="module")
-def vault_gauge(VaultGauge, alice, lixir_vault, distributor, smart_wallet_checker):
+def vault_gauge(VaultGauge, alice, lixir_vault, distributor, smart_wallet_whitelist):
     vault = VaultGauge.deploy(lixir_vault, distributor, alice, {"from": alice})
-    vault.commit_smart_wallet_checker(smart_wallet_checker, {"from": alice})
+    vault.commit_smart_wallet_checker(smart_wallet_whitelist, {"from": alice})
     vault.apply_smart_wallet_checker({"from": alice})
     yield vault
 
