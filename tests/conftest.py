@@ -67,8 +67,12 @@ def receiver(accounts):
     yield accounts.at("0x0000000000000000000000000000000000031337", True)
 
 
-# core contracts
+@pytest.fixture(scope="module")
+def smart_wallet_checker(SmartWalletChecker, accounts):
+    yield SmartWalletChecker.deploy({"from": accounts[0]})
 
+
+# core contracts
 
 # @pytest.fixture(scope="module")
 # def token(ERC20CRV, accounts):
@@ -148,8 +152,11 @@ def distributor(LixDistributor, accounts, gauge_controller, token):
 
 
 @pytest.fixture(scope="module")
-def vault_gauge(VaultGauge, alice, lixir_vault, distributor, accounts, chain):
-    yield VaultGauge.deploy(lixir_vault, distributor, alice, {"from": alice})
+def vault_gauge(VaultGauge, alice, lixir_vault, distributor, smart_wallet_checker):
+    vault = VaultGauge.deploy(lixir_vault, distributor, alice, {"from": alice})
+    vault.commit_smart_wallet_checker(smart_wallet_checker, {"from": alice})
+    vault.apply_smart_wallet_checker({"from": alice})
+    yield vault
 
 # @pytest.fixture(scope="module")
 # def rewards_only_gauge(RewardsOnlyGauge, alice, mock_lp_token):
