@@ -1,5 +1,8 @@
 {
-    "scripts": {
-      "preinstall": "npm i -g ganache-cli@6.12.1"
-    }
+  "dependencies": {
+    "@typechain/ethers-v5": "^7.0.1",
+    "ethers": "^5.4.6",
+    "typechain": "^5.1.2",
+    "typescript": "^4.4.2"
   }
+}
