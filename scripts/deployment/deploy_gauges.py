@@ -18,13 +18,19 @@ def deploy_gauges():
     vaults = json.loads(f.read())
     f.close()
 
+    f = open(f"deploy_config_{network}.json", "r")
+    deploy_config = json.loads(f.read())
+    f.close()
+
+    weights = deploy_config["gauge_weights"]
     gauge_addresses = {}
     gauges = []
 
     for vault in vaults:
         gauge = system.deploy_gauge(vaults[vault])
+        system.add_gauge(gauge, weights[vault])
         gauges.append(gauge)
-        gauge_addresses[vault] = {"vault": vaults[vault], "gauge": gauge.address}
+        gauge_addresses[vault] = {"vault": vaults[vault], "gauge": gauge.address, "weight": weights[vault]}
 
     f = open(
         f"deployed/{network}_gauges_deployed_{datetime.utcnow().isoformat()}.json", "w"
