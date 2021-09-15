@@ -8,3 +8,4 @@ reports/
 /scripts/deployment_keys.py
 TODO
 node_modules/
+types/
