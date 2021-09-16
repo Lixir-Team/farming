@@ -1,0 +1,8 @@
+{
+  "lix": "0xd0345D30FD918D7682398ACbCdf139C808998709",
+  "registry": "None",
+  "escrow": "0xe3e1702D05F01fE2eA08466f7e394dAEE94F289d",
+  "fee_distributor": "0x720d420C3Ca88F5e241CEF716A235FC4c44720d6",
+  "gauge_controller": "0x58773a9D95C9fde59d1a5f57BB7a56Df6509d6dd",
+  "lix_distributor": "0xDd44eDDbD3d9002B6Acc54b2f196Cb902438556a"
+}
