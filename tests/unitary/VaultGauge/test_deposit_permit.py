@@ -1,6 +1,6 @@
 import pytest
 from eip712.messages import EIP712Message
-
+from brownie import chain
 import eth_abi
 from brownie.convert import to_bytes
 
@@ -26,7 +26,7 @@ def test_permit(local, lixir_vault, vault_gauge, web3, chain):
     message = Permit(
         _name_='Test Vault Token',
         _version_='1',
-        _chainId_=lixir_vault.getChainId(),
+        _chainId_=chain.id,
         _verifyingContract_=lixir_vault.address,
 
         owner=local.address,

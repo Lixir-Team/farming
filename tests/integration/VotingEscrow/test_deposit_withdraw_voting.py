@@ -187,10 +187,10 @@ class StateMachine:
         assert self.voting_escrow.totalSupplyAt(block_number) == total_supply
 
 
-def test_state_machine(state_machine, accounts, VotingEscrow):
+def test_state_machine(state_machine, registry, accounts, VotingEscrow):
     token = ERC20("", "", 18)
     voting_escrow = VotingEscrow.deploy(
-        token, "Voting-escrowed CRV", "veCRV", "veCRV_0.99", {"from": accounts[0]}
+        registry, token, "Voting-escrowed CRV", "veCRV", "veCRV_0.99", {"from": accounts[0]}
     )
 
     state_machine(StateMachine, accounts[:10], token, voting_escrow, settings={"max_examples": 30})

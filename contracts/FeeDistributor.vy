@@ -15,12 +15,9 @@ interface VotingEscrow:
     def point_history(loc: uint256) -> Point: view
     def checkpoint(): nonpayable
 
-
-event CommitAdmin:
-    admin: address
-
-event ApplyAdmin:
-    admin: address
+interface LixirRegistry:
+    def isGovOrDelegate(account: address) -> bool: view
+    def emergencyReturn() -> address: view
 
 event ToggleAllowCheckpointToken:
     toggle_flag: bool
@@ -54,6 +51,7 @@ user_epoch_of: public(HashMap[address, uint256])
 last_token_time: public(uint256)
 tokens_per_week: public(uint256[1000000000000000])
 
+registry: public(address)
 voting_escrow: public(address)
 token: public(address)
 total_received: public(uint256)
@@ -61,10 +59,7 @@ token_last_balance: public(uint256)
 
 ve_supply: public(uint256[1000000000000000])  # VE total supply at week bounds
 
-admin: public(address)
-future_admin: public(address)
 can_checkpoint_token: public(bool)
-emergency_return: public(address)
 is_killed: public(bool)
 
 
@@ -73,17 +68,14 @@ def __init__(
     _voting_escrow: address,
     _start_time: uint256,
     _token: address,
-    _admin: address,
-    _emergency_return: address
+    _registry: address,
 ):
     """
     @notice Contract constructor
     @param _voting_escrow VotingEscrow contract address
     @param _start_time Epoch time for fee distribution to start
     @param _token Fee token address (3CRV)
-    @param _admin Admin address
-    @param _emergency_return Address to transfer `_token` balance to
-                             if this contract is killed
+    @param _registry Registry address
     """
     t: uint256 = _start_time / WEEK * WEEK
     self.start_time = t
@@ -91,8 +83,7 @@ def __init__(
     self.time_cursor = t
     self.token = _token
     self.voting_escrow = _voting_escrow
-    self.admin = _admin
-    self.emergency_return = _emergency_return
+    self.registry = _registry
 
 
 @internal
@@ -135,7 +126,7 @@ def checkpoint_token():
          by the contract owner. Beyond initial distro, it can be enabled for anyone
          to call.
     """
-    assert (msg.sender == self.admin) or\
+    assert LixirRegistry(self.registry).isGovOrDelegate(msg.sender) or\
            (self.can_checkpoint_token and (block.timestamp > self.last_token_time + TOKEN_CHECKPOINT_DEADLINE))
     self._checkpoint_token()
 
@@ -389,36 +380,12 @@ def burn(_coin: address) -> bool:
 
     return True
 
-
-@external
-def commit_admin(_addr: address):
-    """
-    @notice Commit transfer of ownership
-    @param _addr New admin address
-    """
-    assert msg.sender == self.admin  # dev: access denied
-    self.future_admin = _addr
-    log CommitAdmin(_addr)
-
-
-@external
-def apply_admin():
-    """
-    @notice Apply transfer of ownership
-    """
-    assert msg.sender == self.admin
-    assert self.future_admin != ZERO_ADDRESS
-    future_admin: address = self.future_admin
-    self.admin = future_admin
-    log ApplyAdmin(future_admin)
-
-
 @external
 def toggle_allow_checkpoint_token():
     """
     @notice Toggle permission for checkpointing by any account
     """
-    assert msg.sender == self.admin
+    assert LixirRegistry(self.registry).isGovOrDelegate(msg.sender)
     flag: bool = not self.can_checkpoint_token
     self.can_checkpoint_token = flag
     log ToggleAllowCheckpointToken(flag)
@@ -431,12 +398,14 @@ def kill_me():
     @dev Killing transfers the entire 3CRV balance to the emergency return address
          and blocks the ability to claim or burn. The contract cannot be unkilled.
     """
-    assert msg.sender == self.admin
-
+    assert LixirRegistry(self.registry).isGovOrDelegate(msg.sender)
+    emergency_return: address = LixirRegistry(self.registry).emergencyReturn()
+    assert emergency_return != ZERO_ADDRESS
+    
     self.is_killed = True
 
     token: address = self.token
-    assert ERC20(token).transfer(self.emergency_return, ERC20(token).balanceOf(self))
+    assert ERC20(token).transfer(emergency_return, ERC20(token).balanceOf(self))
 
 
 @external
@@ -447,15 +416,17 @@ def recover_balance(_coin: address) -> bool:
     @param _coin Token address
     @return bool success
     """
-    assert msg.sender == self.admin
+    assert LixirRegistry(self.registry).isGovOrDelegate(msg.sender)
     assert _coin != self.token
+    emergency_return: address = LixirRegistry(self.registry).emergencyReturn()
+    assert emergency_return != ZERO_ADDRESS
 
     amount: uint256 = ERC20(_coin).balanceOf(self)
     response: Bytes[32] = raw_call(
         _coin,
         concat(
             method_id("transfer(address,uint256)"),
-            convert(self.emergency_return, bytes32),
+            convert(emergency_return, bytes32),
             convert(amount, bytes32),
         ),
         max_outsize=32,
@@ -464,3 +435,4 @@ def recover_balance(_coin: address) -> bool:
         assert convert(response, bool)
 
     return True
+

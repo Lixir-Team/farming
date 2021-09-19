@@ -3,15 +3,16 @@ import pytest
 
 
 @pytest.fixture(scope="module")
-def fee_distributor(FeeDistributor, accounts, chain, voting_escrow, coin_a):
+def fee_distributor(FeeDistributor, registry, accounts, chain, voting_escrow, coin_a):
+    registry.setEmergencyReturn(accounts[1], {"from": accounts[0]})
     yield FeeDistributor.deploy(
-        voting_escrow, chain.time(), coin_a, accounts[0], accounts[1], {"from": accounts[0]}
+        voting_escrow, chain.time(), coin_a, registry, {"from": accounts[0]}
     )
 
 
-def test_assumptions(fee_distributor, accounts):
+def test_assumptions(fee_distributor, registry, accounts):
     assert not fee_distributor.is_killed()
-    assert fee_distributor.emergency_return() == accounts[1]
+    assert registry.emergencyReturn() == accounts[1]
 
 
 def test_kill(fee_distributor, accounts):
@@ -27,23 +28,23 @@ def test_multi_kill(fee_distributor, accounts):
     assert fee_distributor.is_killed()
 
 
-def test_killing_xfers_tokens(fee_distributor, accounts, coin_a):
+def test_killing_xfers_tokens(fee_distributor, registry, accounts, coin_a):
     coin_a._mint_for_testing(fee_distributor, 31337)
 
     fee_distributor.kill_me({"from": accounts[0]})
 
-    assert fee_distributor.emergency_return() == accounts[1]
+    assert registry.emergencyReturn() == accounts[1]
     assert coin_a.balanceOf(accounts[1]) == 31337
 
 
-def test_multi_kill_token_xfer(fee_distributor, accounts, coin_a):
+def test_multi_kill_token_xfer(fee_distributor, registry, accounts, coin_a):
     coin_a._mint_for_testing(fee_distributor, 10000)
     fee_distributor.kill_me({"from": accounts[0]})
 
     coin_a._mint_for_testing(fee_distributor, 30000)
     fee_distributor.kill_me({"from": accounts[0]})
 
-    assert fee_distributor.emergency_return() == accounts[1]
+    assert registry.emergencyReturn() == accounts[1]
     assert coin_a.balanceOf(accounts[1]) == 40000
 
 

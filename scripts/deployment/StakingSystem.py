@@ -28,18 +28,13 @@ StakingSystemConfig = namedtuple(
     ],
 )
 
-StakingAccounts = namedtuple(
-    "LixirAccounts",
-    ["fee_dist_admin", "lix_dist_admin", "gauge_admin", "emergency_return", "deployer"],
-)
-
 class StakingSystem:
     __create_key = object()
 
     def __init__(
         self,
         create_key,
-        staking_accounts: StakingAccounts,
+        deployer,
         dep_config: StakingDependenciesConfig,
         system_config: StakingSystemConfig
     ):
@@ -48,13 +43,8 @@ class StakingSystem:
         # dep_config
         # idk if we need self.registry = dep_config.registry
         self.lix = dep_config.lix
-        
-        # accounts
-        self.fee_dist_admin = staking_accounts.fee_dist_admin
-        self.lix_dist_admin = staking_accounts.lix_dist_admin
-        self.gauge_admin = staking_accounts.gauge_admin
-        self.emergency_return = staking_accounts.emergency_return
-        self.deployer = staking_accounts.deployer
+        self.registry = dep_config.registry
+        self.deployer = deployer
 
         # system config
         self.escrow = system_config.escrow
@@ -71,38 +61,37 @@ class StakingSystem:
         return self.gauge_controller.add_gauge(gauge, 0, weight, {"from": self.deployer, "gas": 5000000})
 
     @classmethod
-    def deploy(cls, lix, registry, staking_accounts: StakingAccounts):
-        fee_dist_admin, lix_dist_admin, gauge_admin, emergency_return, deployer = staking_accounts
-        escrow = VotingEscrow.deploy(lix, "Vote-escrowed LIX", "veLIX", "veLIX_0.99", {"from": deployer})
-        fee_distributor = FeeDistributor.deploy(escrow, 0, lix, fee_dist_admin, emergency_return, {"from": deployer})
-        gauge_controller = GaugeController.deploy(lix, escrow, {"from": deployer})
-        lix_distributor = LixDistributor.deploy(lix, gauge_controller, lix_dist_admin, emergency_return, {"from": deployer}) # should I 
+    def deploy(cls, lix, registry, deployer):
+        escrow = VotingEscrow.deploy(registry, lix, "Vote-escrowed LIX", "veLIX", "veLIX_0.99", {"from": deployer})
+        # fee_distributor = FeeDistributor.deploy(escrow, 0, lix, fee_dist_admin, emergency_return, {"from": deployer})
+        gauge_controller = GaugeController.deploy(registry, lix, escrow, {"from": deployer})
+        lix_distributor = LixDistributor.deploy(lix, gauge_controller, registry, {"from": deployer}) # should I 
         
-        gauge_controller.add_type(b"Liquidity", {"from": deployer})
+        gauge_controller.add_type(b"Vaults", {"from": deployer})
         gauge_controller.change_type_weight(0, 10 ** 18, {"from": deployer})
         # lix.approve(distributor, 6000000, {"from": deployer})
         # distributor.set_initial_params(6000000, {"from": deployer})
         dep_config = StakingDependenciesConfig(lix, registry)
         staking_config = StakingSystemConfig(
             escrow,
-            fee_distributor,
+            None,
             gauge_controller,
             lix_distributor
         )
         
-        return StakingSystem(cls.__create_key, staking_accounts, dep_config, staking_config)
+        return StakingSystem(cls.__create_key, deployer, dep_config, staking_config)
 
 
     @classmethod
     def connect(
         cls,
-        lixir_accounts: StakingAccounts,
+        deployer,
         dep_config: StakingDependenciesConfig,
         config: StakingSystemConfig,
     ):
         return StakingSystem(
             cls.__create_key,
-            lixir_accounts,
+            deployer,
             dep_config,
             StakingSystemConfig(
                 escrow=VotingEscrow.at(config.escrow),
@@ -115,7 +104,7 @@ class StakingSystem:
 
     @classmethod
     def load(
-        cls, staking_accounts: StakingAccounts, dependencies_file_path, system_file_path
+        cls, deployer, dependencies_file_path, system_file_path
     ):
         deps = load_dependencies(dependencies_file_path)
         f = open(system_file_path, "r")
@@ -127,28 +116,28 @@ class StakingSystem:
             gauge_controller=system_config["gauge_controller"],
             lix_distributor=system_config["lix_distributor"],
         )
-        return cls.connect(staking_accounts, deps, system)
+        return cls.connect(deployer, deps, system)
 
 
-def get_accounts():
+
+accounts = a.from_mnemonic(os.getenv("MNEMONIC"), 10)
+
+
+def try_get_signer(account):
+    try:
+        return next(v for v in accounts if v == account)
+    except:
+        return account
+
+def get_deployer():
     network = chain_to_name[chain.id]
     if network == "ganache":
-            return StakingAccounts(
-                accounts[0],
-                accounts[1],
-                accounts[2],
-                accounts[3],
-                accounts[4],
-            )
+            return accounts[0]
     f = open(f"deploy_config_{network}.json", "r")
     deploy_config = json.loads(f.read())
     f.close()
-    fee_dist_admin = deploy_config["fee_dist_admin"]
-    lix_dist_admin = deploy_config["fee_dist_admin"]
-    gauge_admin = deploy_config["gauge_admin"]
-    emergency_return = deploy_config["emergency_return"]
-    deployer = accounts.load(f"lix-{network}")
-    return StakingAccounts(fee_dist_admin, lix_dist_admin, gauge_admin, emergency_return, deployer)
+    deployer = try_get_signer(deploy_config["deployer"])
+    return deployer
 
 
 def connect_dependencies(dep_config: StakingDependenciesConfig):

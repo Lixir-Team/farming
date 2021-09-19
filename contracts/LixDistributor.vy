@@ -12,6 +12,9 @@ interface VaultGauge:
     def integrate_fraction(addr: address) -> uint256: view
     def user_checkpoint(addr: address) -> bool: nonpayable
 
+interface LixirRegistry:
+    def isGovOrDelegate(account: address) -> bool: view
+    def emergencyReturn() -> address: view
 
 interface GaugeController:
     def gauge_types(addr: address) -> int128: view
@@ -51,18 +54,16 @@ start_epoch_supply: uint256
 # LIX
 lix: public(address)
 controller: public(address)
-admin: public(address)
-emergency_return: public(address)
+registry: public(address)
 
 # user -> gauge -> value
 distributed: public(HashMap[address, HashMap[address, uint256]])
 
 @external
-def __init__(_lix: address, _controller: address, _admin: address, _emergency_return: address):
+def __init__(_lix: address, _controller: address, _registry: address):
     self.lix = _lix
     self.controller = _controller
-    self.admin = _admin
-    self.emergency_return = _emergency_return
+    self.registry = _registry
     self.start_epoch_time = block.timestamp + DISTRIBUTION_DELAY - RATE_REDUCTION_TIME
     self.mining_epoch = -1
     self.rate = 0
@@ -244,14 +245,16 @@ def recover_balance(_coin: address) -> bool:
     @param _coin Token address
     @return bool success
     """
-    assert msg.sender == self.admin
+    assert LixirRegistry(self.registry).isGovOrDelegate(msg.sender)
+    emergency_return: address = LixirRegistry(self.registry).emergencyReturn()
+    assert emergency_return != ZERO_ADDRESS
 
     amount: uint256 = ERC20(_coin).balanceOf(self)
     response: Bytes[32] = raw_call(
         _coin,
         concat(
             method_id("transfer(address,uint256)"),
-            convert(self.emergency_return, bytes32),
+            convert(emergency_return, bytes32),
             convert(amount, bytes32),
         ),
         max_outsize=32,

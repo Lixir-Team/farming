@@ -1,9 +1,8 @@
-// Sources flattened with hardhat v2.5.0 https://hardhat.org
+// Sources flattened with hardhat v2.2.1 https://hardhat.org
 
 // File @uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolImmutables.sol@v1.0.0-rc.2
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.5.0;
 
 /// @title Pool state that never changes
 /// @notice These parameters are fixed for a pool forever, i.e., the methods will always return the same values
@@ -41,8 +40,7 @@ interface IUniswapV3PoolImmutables {
 
 // File @uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolState.sol@v1.0.0-rc.2
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.5.0;
 
 /// @title Pool state that can change
 /// @notice These methods compose the pool's state, and can change with any frequency including multiple times
@@ -161,8 +159,7 @@ interface IUniswapV3PoolState {
 
 // File @uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolDerivedState.sol@v1.0.0-rc.2
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.5.0;
 
 /// @title Pool state that is not stored
 /// @notice Contains view functions to provide information about the pool that is computed rather than stored on the
@@ -205,8 +202,7 @@ interface IUniswapV3PoolDerivedState {
 
 // File @uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolActions.sol@v1.0.0-rc.2
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.5.0;
 
 /// @title Permissionless pool actions
 /// @notice Contains pool methods that can be called by anyone
@@ -312,8 +308,7 @@ interface IUniswapV3PoolActions {
 
 // File @uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolOwnerActions.sol@v1.0.0-rc.2
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.5.0;
 
 /// @title Permissioned pool actions
 /// @notice Contains pool methods that may only be called by the factory owner
@@ -339,8 +334,7 @@ interface IUniswapV3PoolOwnerActions {
 
 // File @uniswap/v3-core/contracts/interfaces/pool/IUniswapV3PoolEvents.sol@v1.0.0-rc.2
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.5.0;
 
 /// @title Events emitted by a pool
 /// @notice Contains all events emitted by the pool
@@ -462,8 +456,7 @@ interface IUniswapV3PoolEvents {
 
 // File @uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol@v1.0.0-rc.2
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.5.0;
 
 
 
@@ -488,8 +481,7 @@ interface IUniswapV3Pool is
 
 // File @uniswap/v3-core/contracts/libraries/TickMath.sol@v1.0.0-rc.2
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.5.0;
 
 /// @title Math library for computing sqrt prices from ticks and vice versa
 /// @notice Computes sqrt price for ticks of size 1.0001, i.e. sqrt(1.0001^tick) as fixed point Q64.96 numbers. Supports
@@ -697,8 +689,7 @@ library TickMath {
 
 // File @uniswap/v3-core/contracts/libraries/FullMath.sol@v1.0.0-rc.2
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.4.0;
 
 /// @title Contains 512-bit math functions
 /// @notice Facilitates multiplication and division that can have overflow of an intermediate value without any loss of precision
@@ -825,8 +816,7 @@ library FullMath {
 
 // File @uniswap/v3-core/contracts/libraries/FixedPoint128.sol@v1.0.0-rc.2
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.4.0;
 
 /// @title FixedPoint128
 /// @notice A library for handling binary fixed point numbers, see https://en.wikipedia.org/wiki/Q_(number_format)
@@ -837,8 +827,7 @@ library FixedPoint128 {
 
 // File @uniswap/v3-core/contracts/interfaces/callback/IUniswapV3MintCallback.sol@v1.0.0-rc.2
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.5.0;
 
 /// @title Callback for IUniswapV3PoolActions#mint
 /// @notice Any contract that calls IUniswapV3PoolActions#mint must implement this interface
@@ -859,8 +848,7 @@ interface IUniswapV3MintCallback {
 
 // File @uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol@v1.0.0-rc.2
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.5.0;
 
 /// @title The interface for the Uniswap V3 Factory
 /// @notice The Uniswap V3 Factory facilitates creation of Uniswap V3 pools and control over the protocol fees
@@ -941,8 +929,7 @@ interface IUniswapV3Factory {
 
 // File @uniswap/v3-periphery/contracts/libraries/PositionKey.sol@v1.0.0-beta.22
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.5.0;
 
 library PositionKey {
     /// @dev Returns the key of the position in the core library
@@ -958,8 +945,7 @@ library PositionKey {
 
 // File @uniswap/v3-core/contracts/libraries/FixedPoint96.sol@v1.0.0-rc.2
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.4.0;
 
 /// @title FixedPoint96
 /// @notice A library for handling binary fixed point numbers, see https://en.wikipedia.org/wiki/Q_(number_format)
@@ -972,8 +958,7 @@ library FixedPoint96 {
 
 // File @uniswap/v3-periphery/contracts/libraries/LiquidityAmounts.sol@v1.0.0-beta.22
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.5.0;
 
 
 /// @title Liquidity amount functions
@@ -1111,8 +1096,7 @@ library LiquidityAmounts {
 
 // File @uniswap/v3-periphery/contracts/libraries/PoolAddress.sol@v1.0.0-beta.22
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.5.0;
 
 /// @title Provides functions for deriving a pool address from the factory, tokens, and the fee
 library PoolAddress {
@@ -1164,8 +1148,7 @@ library PoolAddress {
 // File @openzeppelin/contracts/token/ERC20/IERC20.sol@v3.4.1-solc-0.7-2
 
 
-
-pragma solidity =0.7.6;
+pragma solidity ^0.7.0;
 
 /**
  * @dev Interface of the ERC20 standard as defined in the EIP.
@@ -1244,8 +1227,7 @@ interface IERC20 {
 
 // File @uniswap/v3-periphery/contracts/libraries/TransferHelper.sol@v1.0.0-beta.22
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.6.0;
 
 library TransferHelper {
     /// @notice Transfers tokens from the targeted address to the given destination
@@ -1307,8 +1289,7 @@ library TransferHelper {
 // File @openzeppelin/contracts/utils/Context.sol@v3.4.1-solc-0.7-2
 
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.6.0 <0.8.0;
 
 /*
  * @dev Provides information about the current execution context, including the
@@ -1335,8 +1316,7 @@ abstract contract Context {
 // File @openzeppelin/contracts/utils/Pausable.sol@v3.4.1-solc-0.7-2
 
 
-
-pragma solidity =0.7.6;
+pragma solidity ^0.7.0;
 
 /**
  * @dev Contract module which allows children to implement an emergency stop
@@ -1427,8 +1407,7 @@ abstract contract Pausable is Context {
 // File @openzeppelin/contracts/math/Math.sol@v3.4.1-solc-0.7-2
 
 
-
-pragma solidity =0.7.6;
+pragma solidity ^0.7.0;
 
 /**
  * @dev Standard math utilities missing in the Solidity language.
@@ -1462,8 +1441,7 @@ library Math {
 // File @openzeppelin/contracts/math/SafeMath.sol@v3.4.1-solc-0.7-2
 
 
-
-pragma solidity =0.7.6;
+pragma solidity ^0.7.0;
 
 /**
  * @dev Wrappers over Solidity's arithmetic operations with added overflow
@@ -1680,8 +1658,7 @@ library SafeMath {
 // File contracts/interfaces/IERC20Permit.sol
 
 
-
-pragma solidity =0.7.6;
+pragma solidity ^0.7.0;
 
 /**
  * @dev Interface of the ERC20 Permit extension allowing approvals to be made via signatures, as defined in
@@ -1742,7 +1719,7 @@ interface IERC20Permit {
 
 // File contracts/interfaces/ILixirVaultToken.sol
 
-pragma solidity =0.7.6;
+pragma solidity ^0.7.0;
 
 
 interface ILixirVaultToken is IERC20, IERC20Permit {}
@@ -1751,8 +1728,7 @@ interface ILixirVaultToken is IERC20, IERC20Permit {}
 // File @openzeppelin/contracts/utils/Address.sol@v3.4.1-solc-0.7-2
 
 
-
-pragma solidity =0.7.6;
+pragma solidity ^0.7.0;
 
 /**
  * @dev Collection of functions related to the address type
@@ -1944,9 +1920,8 @@ library Address {
 // File @openzeppelin/contracts/proxy/Initializable.sol@v3.4.1-solc-0.7-2
 
 
-
 // solhint-disable-next-line compiler-version
-pragma solidity =0.7.6;
+pragma solidity >=0.4.24 <0.8.0;
 
 /**
  * @dev This is a base contract to aid in writing upgradeable contracts, or any kind of contract that will be deployed
@@ -2001,8 +1976,7 @@ abstract contract Initializable {
 // File contracts/interfaces/EIP712.sol
 
 
-
-pragma solidity =0.7.6;
+pragma solidity ^0.7.0;
 
 /**
  * @dev https://eips.ethereum.org/EIPS/eip-712[EIP 712] is a standard for hashing and signing of typed structured data.
@@ -2111,7 +2085,7 @@ abstract contract EIP712Initializable is Initializable {
 
 // File contracts/libraries/LixirError.sol
 
-pragma solidity =0.7.6;
+pragma solidity ^0.7.6;
 
 library LixirErrors {
   function require_INSUFFICIENT_BALANCE(bool cond) internal pure {
@@ -2152,7 +2126,6 @@ library LixirErrors {
 
 // File contracts/LixirVaultToken.sol
 
-
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -2166,7 +2139,7 @@ library LixirErrors {
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity =0.7.6;
+pragma solidity ^0.7.0;
 
 
 
@@ -2323,7 +2296,6 @@ contract LixirVaultToken is ILixirVaultToken, EIP712Initializable {
     bytes32 hash = _hashTypedDataV4(structHash);
 
     address signer = ecrecover(hash, v, r, s);
-
     LixirErrors.require_INVALID_SIGNATURE(signer != address(0));
 
     _nonces[owner] = nonce + 1;
@@ -2365,7 +2337,7 @@ contract LixirVaultToken is ILixirVaultToken, EIP712Initializable {
   {}
 
   function _mintPoolTokens(address recipient, uint256 amount) internal {
-    // _beforeMintCallback(recipient, amount);
+    _beforeMintCallback(recipient, amount);
     _balance[recipient] = _balance[recipient].add(amount);
     _totalSupply = _totalSupply.add(amount);
     emit Transfer(address(0), recipient, amount);
@@ -2405,24 +2377,12 @@ contract LixirVaultToken is ILixirVaultToken, EIP712Initializable {
     _allowance[owner][spender] = amount;
     emit Approval(owner, spender, amount);
   }
-
-  function getChainId() external view returns (uint256 chainId) {
-      // Silence state mutability warning without generating bytecode.
-  // See https://github.com/ethereum/solidity/issues/10090#issuecomment-741789128 and
-  // https://github.com/ethereum/solidity/issues/2691
-  this;
-
-  // solhint-disable-next-line no-inline-assembly
-  assembly {
-    chainId := chainid()
-  }
-  }
 }
 
 
 // File contracts/libraries/LixirRoles.sol
 
-pragma solidity =0.7.6;
+pragma solidity ^0.7.6;
 
 library LixirRoles {
   bytes32 constant gov_role = keccak256('v1_gov_role');
@@ -2444,8 +2404,7 @@ library LixirRoles {
 
 // File contracts/libraries/SafeCast.sol
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.5.0;
 
 /// @title Safe casting methods
 /// @notice Contains methods for safely casting between types
@@ -2484,8 +2443,7 @@ library SafeCast {
 
 // File @uniswap/v3-core/contracts/libraries/LowGasSafeMath.sol@v1.0.0-rc.2
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.7.0;
 
 /// @title Optimized overflow and underflow safe math operations
 /// @notice Contains methods for doing math operations that revert on overflow or underflow for minimal gas cost
@@ -2534,8 +2492,7 @@ library LowGasSafeMath {
 
 // File @uniswap/v3-core/contracts/libraries/UnsafeMath.sol@v1.0.0-rc.2
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.5.0;
 
 /// @title Math functions that do not check inputs or outputs
 /// @notice Contains methods that perform common math functions but do not do any overflow or underflow checks
@@ -2555,8 +2512,7 @@ library UnsafeMath {
 
 // File contracts/libraries/SqrtPriceMath.sol
 
-
-pragma solidity =0.7.6;
+pragma solidity >=0.5.0;
 
 
 
@@ -2782,7 +2738,7 @@ library SqrtPriceMath {
 
 // File contracts/interfaces/ILixirVault.sol
 
-pragma solidity =0.7.6;
+pragma solidity ^0.7.6;
 
 interface ILixirVault is ILixirVaultToken {
   function initialize(
@@ -2815,6 +2771,12 @@ interface ILixirVault is ILixirVaultToken {
 
   function setStrategy(address _strategy) external;
 
+  function setPerformanceFee(uint24 newFee) external;
+
+  function emergencyExit() external;
+
+  function unpause() external;
+
   function mainPosition()
     external
     view
@@ -2843,6 +2805,15 @@ interface ILixirVault is ILixirVaultToken {
     uint256 deadline
   ) external returns (uint256 amount0Out, uint256 amount1Out);
 
+  function withdrawFrom(
+    address withdrawer,
+    uint256 shares,
+    uint256 amount0Min,
+    uint256 amount1Min,
+    address recipient,
+    uint256 deadline
+  ) external returns (uint256 amount0Out, uint256 amount1Out);
+
   function deposit(
     uint256 amount0Desired,
     uint256 amount1Desired,
@@ -2857,14 +2828,23 @@ interface ILixirVault is ILixirVaultToken {
       uint256 amount0,
       uint256 amount1
     );
+
+  function calculateTotalsFromTick(int24 virtualTick)
+    external
+    view
+    returns (
+      uint256 total0,
+      uint256 total1,
+      uint128 mL,
+      uint128 rL
+    );
 }
 
 
 // File @openzeppelin/contracts/utils/EnumerableSet.sol@v3.4.1-solc-0.7-2
 
 
-
-pragma solidity =0.7.6;
+pragma solidity ^0.7.0;
 
 /**
  * @dev Library for managing
@@ -3164,8 +3144,7 @@ library EnumerableSet {
 // File @openzeppelin/contracts/access/AccessControl.sol@v3.4.1-solc-0.7-2
 
 
-
-pragma solidity =0.7.6;
+pragma solidity ^0.7.0;
 
 
 
@@ -3382,7 +3361,6 @@ abstract contract AccessControl is Context {
 
 // File @uniswap/v3-periphery/contracts/interfaces/external/IWETH9.sol@v1.0.0-beta.22
 
-
 pragma solidity =0.7.6;
 
 /// @title Interface for WETH9
@@ -3397,7 +3375,7 @@ interface IWETH9 is IERC20 {
 
 // File contracts/LixirRegistry.sol
 
-pragma solidity =0.7.6;
+pragma solidity ^0.7.6;
 
 
 
@@ -3413,8 +3391,7 @@ contract LixirRegistry is AccessControl {
   bytes32 public constant gov_role = keccak256('v1_gov_role');
   /// same privileges as `gov_role`
   bytes32 public constant delegate_role = keccak256('v1_delegate_role');
-  /// can `setMaxSupply` of a vault; set `keeper` of a vault; configuring
-  /// other options within the strategy contract
+  /// configuring options within the strategy contract & vault
   bytes32 public constant strategist_role = keccak256('v1_strategist_role');
   /// can `emergencyExit` a vault
   bytes32 public constant pauser_role = keccak256('v1_pauser_role');
@@ -3437,9 +3414,16 @@ contract LixirRegistry is AccessControl {
 
   address public feeTo;
 
+  address public emergencyReturn;
+
   uint24 public constant PERFORMANCE_FEE_PRECISION = 1e6;
 
   event FeeToChanged(address indexed previousFeeTo, address indexed newFeeTo);
+
+  event EmergencyReturnChanged(
+    address indexed previousEmergencyReturn,
+    address indexed newEmergencyReturn
+  );
 
   constructor(
     address _governance,
@@ -3482,12 +3466,19 @@ contract LixirRegistry is AccessControl {
     feeTo = _feeTo;
     emit FeeToChanged(previous, _feeTo);
   }
+
+  function setEmergencyReturn(address _emergencyReturn) external {
+    require(isGovOrDelegate(msg.sender));
+    address previous = emergencyReturn;
+    emergencyReturn = _emergencyReturn;
+    emit EmergencyReturnChanged(previous, _emergencyReturn);
+  }
 }
 
 
 // File contracts/LixirBase.sol
 
-pragma solidity =0.7.6;
+pragma solidity ^0.7.6;
 
 
 /**
@@ -3519,7 +3510,20 @@ abstract contract LixirBase {
 
 // File contracts/LixirVault.sol
 
-pragma solidity =0.7.6;
+pragma solidity ^0.7.6;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 contract LixirVault is
@@ -3533,8 +3537,6 @@ contract LixirVault is
   using SafeCast for uint256;
   using SafeCast for int256;
   using SafeCast for uint128;
-
-  uint256 public MAX_SUPPLY;
 
   IERC20 public override token0;
   IERC20 public override token1;
@@ -3583,16 +3585,17 @@ contract LixirVault is
     uint256 total1
   );
 
+  event PerformanceFeeSet(uint24 oldFee, uint24 newFee);
+
+  event StrategySet(address oldStrategy, address newStrategy);
+
   struct DepositPositionData {
     uint128 LDelta;
     int24 tickLower;
     int24 tickUpper;
   }
 
-  enum POSITION {
-    MAIN,
-    RANGE
-  }
+  enum POSITION {MAIN, RANGE}
 
   // details about the uniswap position
   struct Position {
@@ -3622,9 +3625,12 @@ contract LixirVault is
     public
     virtual
     override
+    hasRole(LixirRoles.strategist_role, _strategist)
+    hasRole(LixirRoles.keeper_role, _keeper)
+    hasRole(LixirRoles.strategy_role, _strategy)
     initializer
   {
-    // require(_token0 < _token1);
+    require(_token0 < _token1);
     __LixirVaultToken__initialize(name, symbol);
     token0 = IERC20(_token0);
     token1 = IERC20(_token1);
@@ -3634,12 +3640,12 @@ contract LixirVault is
   }
 
   modifier onlyStrategist() {
-    require(msg.sender == strategist, 'Only strategist');
+    require(msg.sender == strategist);
     _;
   }
 
   modifier onlyStrategy() {
-    require(msg.sender == strategy, 'Only strategy');
+    require(msg.sender == strategy);
     _;
   }
 
@@ -3877,22 +3883,14 @@ contract LixirVault is
       }
       if (!paused()) {
         {
-          (uint256 ma0Out, uint256 ma1Out) = burnAndCollect(
-            mainPosition,
-            tick,
-            shares,
-            _totalSupply
-          );
+          (uint256 ma0Out, uint256 ma1Out) =
+            burnAndCollect(mainPosition, tick, shares, _totalSupply);
           amount0Out = amount0Out.add(ma0Out);
           amount1Out = amount1Out.add(ma1Out);
         }
         {
-          (uint256 ra0Out, uint256 ra1Out) = burnAndCollect(
-            rangePosition,
-            tick,
-            shares,
-            _totalSupply
-          );
+          (uint256 ra0Out, uint256 ra1Out) =
+            burnAndCollect(rangePosition, tick, shares, _totalSupply);
           amount0Out = amount0Out.add(ra0Out);
           amount1Out = amount1Out.add(ra1Out);
         }
@@ -3944,6 +3942,7 @@ contract LixirVault is
     uint256 deadline
   )
     external
+    override
     canSpend(withdrawer, shares)
     returns (uint256 amount0Out, uint256 amount1Out)
   {
@@ -4013,24 +4012,14 @@ contract LixirVault is
     }
   }
 
-  function setMaxSupply(uint256 NEW_MAX_SUPPLY) external onlyStrategist {
-    MAX_SUPPLY = NEW_MAX_SUPPLY;
-  }
-
   function setPerformanceFee(uint24 newFee)
     external
+    override
     onlyRole(LixirRoles.fee_setter_role)
   {
     require(newFee < PERFORMANCE_FEE_PRECISION);
+    emit PerformanceFeeSet(performanceFee, newFee);
     performanceFee = newFee;
-  }
-
-  function _beforeMintCallback(address recipient, uint256 amount)
-    internal
-    view
-    override
-  {
-    LixirErrors.require_MAX_SUPPLY(totalSupply().add(amount) <= MAX_SUPPLY);
   }
 
   function _setPool(uint24 fee) internal {
@@ -4059,6 +4048,7 @@ contract LixirVault is
     onlyStrategist
     hasRole(LixirRoles.strategy_role, _strategy)
   {
+    emit StrategySet(strategy, _strategy);
     strategy = _strategy;
   }
 
@@ -4073,6 +4063,7 @@ contract LixirVault is
 
   function emergencyExit()
     external
+    override
     whenNotPaused
     onlyRole(LixirRoles.pauser_role)
   {
@@ -4080,7 +4071,7 @@ contract LixirVault is
     _pause();
   }
 
-  function unpause() external whenPaused onlyGovOrDelegate {
+  function unpause() external override whenPaused onlyGovOrDelegate {
     _unpause();
   }
 
@@ -4099,15 +4090,17 @@ contract LixirVault is
     int24 rangeTickUpper1,
     uint24 fee
   ) external override onlyStrategy whenNotPaused {
-    require(TickMath.MIN_TICK <= mainTickLower);
-    require(mainTickUpper <= TickMath.MAX_TICK);
-    require(mainTickLower < mainTickUpper);
-    require(TickMath.MIN_TICK <= rangeTickLower0);
-    require(rangeTickUpper0 <= TickMath.MAX_TICK);
-    require(rangeTickLower0 < rangeTickUpper0);
-    require(TickMath.MIN_TICK <= rangeTickLower1);
-    require(rangeTickUpper1 <= TickMath.MAX_TICK);
-    require(rangeTickLower1 < rangeTickUpper1);
+    require(
+      TickMath.MIN_TICK <= mainTickLower &&
+        mainTickUpper <= TickMath.MAX_TICK &&
+        mainTickLower < mainTickUpper &&
+        TickMath.MIN_TICK <= rangeTickLower0 &&
+        rangeTickUpper0 <= TickMath.MAX_TICK &&
+        rangeTickLower0 < rangeTickUpper0 &&
+        TickMath.MIN_TICK <= rangeTickLower1 &&
+        rangeTickUpper1 <= TickMath.MAX_TICK &&
+        rangeTickLower1 < rangeTickUpper1
+    );
     /// if a pool has been previously set, then take the performance fee accrued since last `rebalance`
     /// and burn and collect all positions.
     if (address(activePool) != address(0)) {
@@ -4149,13 +4142,14 @@ contract LixirVault is
     mainPosition.tickUpper = mainData.tickUpper;
 
     if (0 < amount0 || 0 < amount1) {
-      uint128 mL = LiquidityAmounts.getLiquidityForAmounts(
-        sqrtRatioX96,
-        TickMath.getSqrtRatioAtTick(mainData.tickLower),
-        TickMath.getSqrtRatioAtTick(mainData.tickUpper),
-        amount0,
-        amount1
-      );
+      uint128 mL =
+        LiquidityAmounts.getLiquidityForAmounts(
+          sqrtRatioX96,
+          TickMath.getSqrtRatioAtTick(mainData.tickLower),
+          TickMath.getSqrtRatioAtTick(mainData.tickUpper),
+          amount0,
+          amount1
+        );
 
       if (0 < mL) {
         activePool.mint(
@@ -4172,16 +4166,18 @@ contract LixirVault is
     uint128 rL;
     Position memory rangeData;
     if (0 < amount0 || 0 < amount1) {
-      uint128 rL0 = LiquidityAmounts.getLiquidityForAmount0(
-        TickMath.getSqrtRatioAtTick(rangeData0.tickLower),
-        TickMath.getSqrtRatioAtTick(rangeData0.tickUpper),
-        amount0
-      );
-      uint128 rL1 = LiquidityAmounts.getLiquidityForAmount1(
-        TickMath.getSqrtRatioAtTick(rangeData1.tickLower),
-        TickMath.getSqrtRatioAtTick(rangeData1.tickUpper),
-        amount1
-      );
+      uint128 rL0 =
+        LiquidityAmounts.getLiquidityForAmount0(
+          TickMath.getSqrtRatioAtTick(rangeData0.tickLower),
+          TickMath.getSqrtRatioAtTick(rangeData0.tickUpper),
+          amount0
+        );
+      uint128 rL1 =
+        LiquidityAmounts.getLiquidityForAmount1(
+          TickMath.getSqrtRatioAtTick(rangeData1.tickLower),
+          TickMath.getSqrtRatioAtTick(rangeData1.tickUpper),
+          amount1
+        );
 
       /// only one range position will ever have liquidity (if any)
       if (rL1 < rL0) {
@@ -4220,7 +4216,8 @@ contract LixirVault is
         uint256 total1,
         uint256 tokensOwed0,
         uint256 tokensOwed1
-      ) = calculatePositionInfo(
+      ) =
+        calculatePositionInfo(
           tick,
           sqrtRatioX96,
           mainPosition.tickLower,
@@ -4233,30 +4230,40 @@ contract LixirVault is
           uint256 total1Range,
           uint256 tokensOwed0Range,
           uint256 tokensOwed1Range
-        ) = calculatePositionInfo(
+        ) =
+          calculatePositionInfo(
             tick,
             sqrtRatioX96,
             rangePosition.tickLower,
             rangePosition.tickUpper
           );
-        total0 = total0.add(total0Range);
-        total1 = total1.add(total1Range);
+        total0 = total0.add(total0Range).add(token0.balanceOf(address(this)));
+        total1 = total1.add(total1Range).add(token1.balanceOf(address(this)));
         tokensOwed0 = tokensOwed0.add(tokensOwed0Range);
         tokensOwed1 = tokensOwed1.add(tokensOwed1Range);
       }
+
       uint256 _totalSupply = totalSupply();
-      uint256 sharesFrom0 = 0 < total0
-        ? FullMath.mulDiv(tokensOwed0, _totalSupply, total0)
-        : 0;
-      uint256 sharesFrom1 = 0 < total1
-        ? FullMath.mulDiv(tokensOwed1, _totalSupply, total1)
-        : 0;
-      uint256 shares = FullMath.mulDiv(
-        Math.max(sharesFrom0, sharesFrom1),
-        performanceFee,
-        PERFORMANCE_FEE_PRECISION
-      );
-      _mintPoolTokens(_feeTo, shares);
+
+      uint256 price =
+        FullMath.mulDiv(sqrtRatioX96, sqrtRatioX96, FixedPoint96.Q96);
+
+      total1 = total1.add(FullMath.mulDiv(total0, price, FixedPoint96.Q96));
+
+      if (total1 > 0) {
+        tokensOwed1 = tokensOwed1.add(
+          FullMath.mulDiv(tokensOwed0, price, FixedPoint96.Q96)
+        );
+        uint256 shares =
+          FullMath.mulDiv(
+            FullMath.mulDiv(tokensOwed1, _totalSupply, total1),
+            performanceFee,
+            PERFORMANCE_FEE_PRECISION
+          );
+        if (shares > 0) {
+          _mintPoolTokens(_feeTo, shares);
+        }
+      }
     }
   }
 
@@ -4311,25 +4318,18 @@ contract LixirVault is
      * N.B. that tokensOwed{0,1} here are calculated prior to burning,
      *  and so should only contain tokensOwed from fees and never tokensOwed from a burn
      */
-    (
-      uint128 liquidity,
-      uint256 tokensOwed0,
-      uint256 tokensOwed1
-    ) = liquidityAndTokensOwed(tick, tickLower, tickUpper);
+    (uint128 liquidity, uint256 tokensOwed0, uint256 tokensOwed1) =
+      liquidityAndTokensOwed(tick, tickLower, tickUpper);
 
-    uint128 LDelta = FullMath
-      .mulDiv(shares, liquidity, _totalSupply)
-      .toUint128();
+    uint128 LDelta =
+      FullMath.mulDiv(shares, liquidity, _totalSupply).toUint128();
 
     amount0Out = FullMath.mulDiv(tokensOwed0, shares, _totalSupply);
     amount1Out = FullMath.mulDiv(tokensOwed1, shares, _totalSupply);
 
     if (0 < LDelta) {
-      (uint256 burnt0Out, uint256 burnt1Out) = activePool.burn(
-        tickLower,
-        tickUpper,
-        LDelta
-      );
+      (uint256 burnt0Out, uint256 burnt1Out) =
+        activePool.burn(tickLower, tickUpper, LDelta);
       amount0Out = amount0Out.add(burnt0Out);
       amount1Out = amount1Out.add(burnt1Out);
     }
@@ -4372,12 +4372,14 @@ contract LixirVault is
       uint256 amount1In
     )
   {
-    (bool roundedSharesFrom0, uint256 sharesFrom0) = 0 < total0
-      ? mulDivRoundingUp(amount0Desired, _totalSupply, total0)
-      : (false, 0);
-    (bool roundedSharesFrom1, uint256 sharesFrom1) = 0 < total1
-      ? mulDivRoundingUp(amount1Desired, _totalSupply, total1)
-      : (false, 0);
+    (bool roundedSharesFrom0, uint256 sharesFrom0) =
+      0 < total0
+        ? mulDivRoundingUp(amount0Desired, _totalSupply, total0)
+        : (false, 0);
+    (bool roundedSharesFrom1, uint256 sharesFrom1) =
+      0 < total1
+        ? mulDivRoundingUp(amount1Desired, _totalSupply, total1)
+        : (false, 0);
     uint8 realSharesOffsetFor0 = roundedSharesFrom0 ? 1 : 2;
     uint8 realSharesOffsetFor1 = roundedSharesFrom1 ? 1 : 2;
     if (
@@ -4439,12 +4441,10 @@ contract LixirVault is
     )
   {
     (uint160 sqrtRatioX96, int24 tick) = getSqrtRatioX96AndTick();
-    uint160 sqrtRatioLowerX96 = TickMath.getSqrtRatioAtTick(
-      mainPosition.tickLower
-    );
-    uint160 sqrtRatioUpperX96 = TickMath.getSqrtRatioAtTick(
-      mainPosition.tickUpper
-    );
+    uint160 sqrtRatioLowerX96 =
+      TickMath.getSqrtRatioAtTick(mainPosition.tickLower);
+    uint160 sqrtRatioUpperX96 =
+      TickMath.getSqrtRatioAtTick(mainPosition.tickUpper);
 
     mLDelta = LiquidityAmounts.getLiquidityForAmounts(
       sqrtRatioX96,
@@ -4480,7 +4480,7 @@ contract LixirVault is
 
   /**
    * @dev Calculates tokens owed for a position
-   * @param tick Current tick
+   * @param realTick Current tick
    * @param tickLower Lower tick of position
    * @param tickUpper Upper tick of position
    * @param feeGrowthInside0LastX128 Last fee growth of token0 between tickLower and tickUpper
@@ -4492,7 +4492,7 @@ contract LixirVault is
    * @return tokensOwed1 Amount of token1 owed to position
    */
   function calculateTokensOwed(
-    int24 tick,
+    int24 realTick,
     int24 tickLower,
     int24 tickUpper,
     uint256 feeGrowthInside0LastX128,
@@ -4507,10 +4507,8 @@ contract LixirVault is
      * we rebalance far frequently enough for this to never happen in any realistic scenario.
      * This has no difference from the v3 implementation, and was copied from contracts/libraries/Position.sol
      */
-    (
-      uint256 feeGrowthInside0X128,
-      uint256 feeGrowthInside1X128
-    ) = getFeeGrowthInsideTicks(tick, tickLower, tickUpper);
+    (uint256 feeGrowthInside0X128, uint256 feeGrowthInside1X128) =
+      getFeeGrowthInsideTicks(realTick, tickLower, tickUpper);
     tokensOwed0 = uint128(
       tokensOwed0Last +
         FullMath.mulDiv(
@@ -4530,7 +4528,7 @@ contract LixirVault is
   }
 
   function _positionDataHelper(
-    int24 tick,
+    int24 realTick,
     int24 tickLower,
     int24 tickUpper
   )
@@ -4565,7 +4563,7 @@ contract LixirVault is
     }
 
     (tokensOwed0, tokensOwed1) = calculateTokensOwed(
-      tick,
+      realTick,
       tickLower,
       tickUpper,
       feeGrowthInside0LastX128,
@@ -4629,9 +4627,49 @@ contract LixirVault is
    * @notice This variant is so that tick TWAP's may be used by other protocols to calculate
    * totals, allowing them to safeguard themselves from manipulation. This would be useful if
    * Lixir vault tokens were used as collateral in a lending protocol.
+   * @param virtualTick Tick at which to calculate amounts from liquidity
    */
-  function calculateTotalsFromTick(int24 tick)
+  function calculateTotalsFromTick(int24 virtualTick)
     external
+    view
+    override
+    returns (
+      uint256 total0,
+      uint256 total1,
+      uint128 mL,
+      uint128 rL
+    )
+  {
+    uint160 sqrtRatioX96 = TickMath.getSqrtRatioAtTick(virtualTick);
+    (, int24 realTick) = getSqrtRatioX96AndTick();
+    return
+      _calculateTotalsFromTick(
+        sqrtRatioX96,
+        realTick,
+        DepositPositionData(0, mainPosition.tickLower, mainPosition.tickUpper),
+        DepositPositionData(0, rangePosition.tickLower, rangePosition.tickUpper)
+      );
+  }
+
+  /**
+   * @dev Helper function for calculating totals
+   * @param sqrtRatioX96 *Current or virtual* sqrtPriceX96
+   * @param realTick Current tick, for calculating tokensOwed correctly
+   * @param mainData Main position data
+   * @param rangeData Range position data
+   * N.B realTick must be provided because tokensOwed calculation needs
+   * the current correct tick because the ticks are only updated upon the
+   * crossing of ticks
+   * sqrtRatioX96 can be a current sqrtPriceX96 *or* a sqrtPriceX96 calculated
+   * from a virtual tick, for external consumption
+   */
+  function _calculateTotalsFromTick(
+    uint160 sqrtRatioX96,
+    int24 realTick,
+    DepositPositionData memory mainData,
+    DepositPositionData memory rangeData
+  )
+    internal
     view
     returns (
       uint256 total0,
@@ -4640,14 +4678,26 @@ contract LixirVault is
       uint128 rL
     )
   {
-    uint160 sqrtRatioX96 = TickMath.getSqrtRatioAtTick(tick);
-    return
-      _calculateTotals(
+    (mL, total0, total1) = calculatePositionTotals(
+      realTick,
+      sqrtRatioX96,
+      mainData.tickLower,
+      mainData.tickUpper
+    );
+    {
+      uint256 rt0;
+      uint256 rt1;
+      (rL, rt0, rt1) = calculatePositionTotals(
+        realTick,
         sqrtRatioX96,
-        tick,
-        DepositPositionData(0, mainPosition.tickLower, mainPosition.tickUpper),
-        DepositPositionData(0, rangePosition.tickLower, rangePosition.tickUpper)
+        rangeData.tickLower,
+        rangeData.tickUpper
       );
+      total0 = total0.add(rt0);
+      total1 = total1.add(rt1);
+    }
+    total0 = total0.add(token0.balanceOf(address(this)));
+    total1 = total1.add(token1.balanceOf(address(this)));
   }
 
   function _calculateTotals(
@@ -4665,31 +4715,14 @@ contract LixirVault is
       uint128 rL
     )
   {
-    (mL, total0, total1) = calculatePositionTotals(
-      tick,
-      sqrtRatioX96,
-      mainData.tickLower,
-      mainData.tickUpper
-    );
-    {
-      uint256 rt0;
-      uint256 rt1;
-      (rL, rt0, rt1) = calculatePositionTotals(
-        tick,
-        sqrtRatioX96,
-        rangeData.tickLower,
-        rangeData.tickUpper
-      );
-      total0 = total0.add(rt0);
-      total1 = total1.add(rt1);
-    }
+    return _calculateTotalsFromTick(sqrtRatioX96, tick, mainData, rangeData);
   }
 
   /**
    * @dev Calculates total tokens obtainable and liquidity of a given position (fees + amounts in position)
    * total{0,1} is sum of tokensOwed{0,1} from each position plus sum of liquidityForAmount{0,1} for each position plus vault balance of token{0,1}
-   * @param tick Current tick
-   * @param sqrtRatioX96 Current square root price
+   * @param realTick Current tick (for calculating tokensOwed)
+   * @param sqrtRatioX96 Current (or virtual) square root price
    * @param tickLower Lower tick of position
    * @param tickLower Upper tick of position
    * @return liquidity Liquidity of position
@@ -4697,7 +4730,7 @@ contract LixirVault is
    * @return total1 Total amount of token1 obtainable from position
    */
   function calculatePositionTotals(
-    int24 tick,
+    int24 realTick,
     uint160 sqrtRatioX96,
     int24 tickLower,
     int24 tickUpper
@@ -4718,13 +4751,13 @@ contract LixirVault is
       total1,
       tokensOwed0,
       tokensOwed1
-    ) = calculatePositionInfo(tick, sqrtRatioX96, tickLower, tickUpper);
+    ) = calculatePositionInfo(realTick, sqrtRatioX96, tickLower, tickUpper);
     total0 = total0.add(tokensOwed0);
     total1 = total1.add(tokensOwed1);
   }
 
   function calculatePositionInfo(
-    int24 tick,
+    int24 realTick,
     uint160 sqrtRatioX96,
     int24 tickLower,
     int24 tickUpper
@@ -4747,18 +4780,17 @@ contract LixirVault is
       feeGrowthInside1LastX128,
       tokensOwed0,
       tokensOwed1
-    ) = _positionDataHelper(tick, tickLower, tickUpper);
+    ) = _positionDataHelper(realTick, tickLower, tickUpper);
 
     uint160 sqrtPriceLower = TickMath.getSqrtRatioAtTick(tickLower);
     uint160 sqrtPriceUpper = TickMath.getSqrtRatioAtTick(tickUpper);
-    (uint256 amount0, uint256 amount1) = getAmountsForLiquidity(
-      sqrtRatioX96,
-      sqrtPriceLower,
-      sqrtPriceUpper,
-      liquidity.toInt128()
-    );
-    total0 = amount0.add(token0.balanceOf(address(this)));
-    total1 = amount1.add(token1.balanceOf(address(this)));
+    (uint256 amount0, uint256 amount1) =
+      getAmountsForLiquidity(
+        sqrtRatioX96,
+        sqrtPriceLower,
+        sqrtPriceUpper,
+        liquidity.toInt128()
+      );
   }
 
   /**
@@ -4902,3 +4934,1184 @@ contract LixirVault is
     }
   }
 }
+
+
+// File contracts/interfaces/ILixirVaultETH.sol
+
+pragma solidity ^0.7.6;
+
+interface ILixirVaultETH is ILixirVault {
+
+  enum TOKEN {ZERO, ONE}
+
+  function WETH_TOKEN() external view returns (TOKEN);
+
+  function depositETH(
+    uint256 amountDesired,
+    uint256 amountEthMin,
+    uint256 amountMin,
+    address recipient,
+    uint256 deadline
+  )
+    external
+    payable
+    returns (
+      uint256 shares,
+      uint256 amountEthIn,
+      uint256 amountIn
+    );
+
+  function withdrawETHFrom(
+    address withdrawer,
+    uint256 shares,
+    uint256 amountEthMin,
+    uint256 amountMin,
+    address payable recipient,
+    uint256 deadline
+  ) external returns (uint256 amountEthOut, uint256 amountOut);
+
+  function withdrawETH(
+    uint256 shares,
+    uint256 amountEthMin,
+    uint256 amountMin,
+    address payable recipient,
+    uint256 deadline
+  ) external returns (uint256 amountEthOut, uint256 amountOut);
+
+  receive() external payable;
+}
+
+
+// File contracts/LixirVaultETH.sol
+
+pragma solidity ^0.7.6;
+
+
+
+contract LixirVaultETH is LixirVault, ILixirVaultETH {
+  using SafeMath for uint256;
+  using SafeCast for uint256;
+
+  IWETH9 public immutable weth9;
+
+  TOKEN public override WETH_TOKEN;
+
+  constructor(address _registry) LixirVault(_registry) {
+    weth9 = LixirRegistry(_registry).weth9();
+  }
+
+  function initialize(
+    string memory name,
+    string memory symbol,
+    address _token0,
+    address _token1,
+    address _strategist,
+    address _keeper,
+    address _strategy
+  ) public override(LixirVault, ILixirVault) initializer {
+    LixirVault.initialize(
+      name,
+      symbol,
+      _token0,
+      _token1,
+      _strategist,
+      _keeper,
+      _strategy
+    );
+    TOKEN _WETH_TOKEN;
+    if (_token0 == address(weth9)) {
+      _WETH_TOKEN = TOKEN.ZERO;
+    } else {
+      require(_token1 == address(weth9));
+      _WETH_TOKEN = TOKEN.ONE;
+    }
+    WETH_TOKEN = _WETH_TOKEN;
+  }
+
+  /**
+    @notice equivalent to `deposit` except logic is configured for
+    ETH instead of ERC20 payments.
+    @param amountDesired amount of ERC20 token desired by caller
+    @param amountEthMin minimum amount of ETH desired by caller
+    @param amountMin minimum amount of ERC20 token desired by caller
+    @param recipient The address for which the liquidity will be created
+    @param deadline Blocktimestamp that this must execute before
+    @return shares
+    @return amountEthIn how much ETH was actually deposited
+    @return amountIn how much the ERC20 token was actually deposited
+   */
+  function depositETH(
+    uint256 amountDesired,
+    uint256 amountEthMin,
+    uint256 amountMin,
+    address recipient,
+    uint256 deadline
+  )
+    external
+    payable
+    override
+    whenNotPaused
+    notExpired(deadline)
+    returns (
+      uint256 shares,
+      uint256 amountEthIn,
+      uint256 amountIn
+    )
+  {
+    TOKEN _WETH_TOKEN = WETH_TOKEN;
+    if (_WETH_TOKEN == TOKEN.ZERO) {
+      (shares, amountEthIn, amountIn) = _depositETH(
+        _WETH_TOKEN,
+        msg.value,
+        amountDesired,
+        amountEthMin,
+        amountMin,
+        recipient,
+        deadline
+      );
+    } else {
+      (shares, amountIn, amountEthIn) = _depositETH(
+        _WETH_TOKEN,
+        amountDesired,
+        msg.value,
+        amountMin,
+        amountEthMin,
+        recipient,
+        deadline
+      );
+    }
+  }
+
+  function _depositETH(
+    TOKEN _WETH_TOKEN,
+    uint256 amount0Desired,
+    uint256 amount1Desired,
+    uint256 amount0Min,
+    uint256 amount1Min,
+    address recipient,
+    uint256 deadline
+  )
+    internal
+    returns (
+      uint256 shares,
+      uint256 amount0In,
+      uint256 amount1In
+    )
+  {
+    uint256 amountEthDesired = msg.value;
+
+    DepositPositionData memory mainData;
+    DepositPositionData memory rangeData;
+    uint256 total0;
+    uint256 total1;
+    (
+      mainData,
+      rangeData,
+      shares,
+      amount0In,
+      amount1In,
+      total0,
+      total1
+    ) = _depositStepOne(
+      amount0Desired,
+      amount1Desired,
+      amount0Min,
+      amount1Min,
+      recipient
+    );
+    if (_WETH_TOKEN == TOKEN.ZERO) {
+      if (0 < amount0In) {
+        weth9.deposit{value: amount0In}();
+      }
+      if (0 < amount1In) {
+        TransferHelper.safeTransferFrom(
+          address(token1),
+          msg.sender,
+          address(this),
+          amount1In
+        );
+      }
+    } else {
+      if (0 < amount0In) {
+        TransferHelper.safeTransferFrom(
+          address(token0),
+          msg.sender,
+          address(this),
+          amount0In
+        );
+      }
+      if (0 < amount1In) {
+        weth9.deposit{value: amount1In}();
+      }
+    }
+
+    _depositStepTwo(
+      mainData,
+      rangeData,
+      recipient,
+      shares,
+      amount0In,
+      amount1In,
+      total0,
+      total1
+    );
+    Address.sendValue(msg.sender, address(this).balance);
+  }
+
+  /**
+    @notice withdraws the desired shares from the vault
+    @dev same as `withdraw` except this can be called from an `approve`d address
+    @param withdrawer the address to withdraw from
+    @param shares number of shares to withdraw
+    @param amountEthMin amount of ETH desired by user
+    @param amountMin Minimum amount of ERC20 token desired by user
+    @param recipient address to recieve ETH and ERC20 withdrawals
+    @param deadline blocktimestamp that this must execute by
+    @return amountEthOut how much ETH was actually withdrawn
+    @return amountOut how much ERC20 token was actually withdrawn
+   */
+  function withdrawETHFrom(
+    address withdrawer,
+    uint256 shares,
+    uint256 amountEthMin,
+    uint256 amountMin,
+    address payable recipient,
+    uint256 deadline
+  )
+    external
+    override
+    canSpend(withdrawer, shares)
+    returns (uint256 amountEthOut, uint256 amountOut)
+  {
+    TOKEN _WETH_TOKEN = WETH_TOKEN;
+    uint256 amount0Min;
+    uint256 amount1Min;
+    if (_WETH_TOKEN == TOKEN.ZERO) {
+      amount0Min = amountEthMin;
+      amount1Min = amountMin;
+      (amountEthOut, amountOut) = _withdrawETH(
+        _WETH_TOKEN,
+        withdrawer,
+        shares,
+        amount0Min,
+        amount1Min,
+        recipient,
+        deadline
+      );
+    } else {
+      amount0Min = amountMin;
+      amount1Min = amountEthMin;
+      (amountOut, amountEthOut) = _withdrawETH(
+        _WETH_TOKEN,
+        withdrawer,
+        shares,
+        amount0Min,
+        amount1Min,
+        recipient,
+        deadline
+      );
+    }
+  }
+
+  /**
+    @notice withdraws the desired shares from the vault
+    @param shares number of shares to withdraw
+    @param amountEthMin amount of ETH desired by user
+    @param amountMin Minimum amount of ERC20 token desired by user
+    @param recipient address to recieve ETH and ERC20 withdrawals
+    @param deadline blocktimestamp that this must execute by
+    @return amountEthOut how much ETH was actually withdrawn
+    @return amountOut how much ERC20 token was actually withdrawn
+   */
+  function withdrawETH(
+    uint256 shares,
+    uint256 amountEthMin,
+    uint256 amountMin,
+    address payable recipient,
+    uint256 deadline
+  ) external override returns (uint256 amountEthOut, uint256 amountOut) {
+    TOKEN _WETH_TOKEN = WETH_TOKEN;
+    uint256 amount0Min;
+    uint256 amount1Min;
+    if (_WETH_TOKEN == TOKEN.ZERO) {
+      amount0Min = amountEthMin;
+      amount1Min = amountMin;
+      (amountEthOut, amountOut) = _withdrawETH(
+        _WETH_TOKEN,
+        msg.sender,
+        shares,
+        amount0Min,
+        amount1Min,
+        recipient,
+        deadline
+      );
+    } else {
+      amount0Min = amountMin;
+      amount1Min = amountEthMin;
+      (amountOut, amountEthOut) = _withdrawETH(
+        _WETH_TOKEN,
+        msg.sender,
+        shares,
+        amount0Min,
+        amount1Min,
+        recipient,
+        deadline
+      );
+    }
+  }
+
+  function _withdrawETH(
+    TOKEN _WETH_TOKEN,
+    address withdrawer,
+    uint256 shares,
+    uint256 amount0Min,
+    uint256 amount1Min,
+    address payable recipient,
+    uint256 deadline
+  )
+    internal
+    notExpired(deadline)
+    returns (uint256 amount0Out, uint256 amount1Out)
+  {
+    (amount0Out, amount1Out) = _withdrawStep(
+      withdrawer,
+      shares,
+      amount0Min,
+      amount1Min,
+      recipient
+    );
+    if (_WETH_TOKEN == TOKEN.ZERO) {
+      if (0 < amount0Out) {
+        weth9.withdraw(amount0Out);
+        Address.sendValue(recipient, amount0Out);
+      }
+      if (0 < amount1Out) {
+        TransferHelper.safeTransfer(address(token1), recipient, amount1Out);
+      }
+    } else {
+      if (0 < amount1Out) {
+        TransferHelper.safeTransfer(address(token0), recipient, amount0Out);
+      }
+      if (0 < amount1Out) {
+        weth9.withdraw(amount1Out);
+        Address.sendValue(recipient, amount1Out);
+      }
+    }
+  }
+
+  receive() external payable override {
+    require(msg.sender == address(weth9));
+  }
+}
+
+
+// File @openzeppelin/contracts/access/Ownable.sol@v3.4.1-solc-0.7-2
+
+
+pragma solidity ^0.7.0;
+
+/**
+ * @dev Contract module which provides a basic access control mechanism, where
+ * there is an account (an owner) that can be granted exclusive access to
+ * specific functions.
+ *
+ * By default, the owner account will be the one that deploys the contract. This
+ * can later be changed with {transferOwnership}.
+ *
+ * This module is used through inheritance. It will make available the modifier
+ * `onlyOwner`, which can be applied to your functions to restrict their use to
+ * the owner.
+ */
+abstract contract Ownable is Context {
+    address private _owner;
+
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+    /**
+     * @dev Initializes the contract setting the deployer as the initial owner.
+     */
+    constructor () {
+        address msgSender = _msgSender();
+        _owner = msgSender;
+        emit OwnershipTransferred(address(0), msgSender);
+    }
+
+    /**
+     * @dev Returns the address of the current owner.
+     */
+    function owner() public view virtual returns (address) {
+        return _owner;
+    }
+
+    /**
+     * @dev Throws if called by any account other than the owner.
+     */
+    modifier onlyOwner() {
+        require(owner() == _msgSender(), "Ownable: caller is not the owner");
+        _;
+    }
+
+    /**
+     * @dev Leaves the contract without owner. It will not be possible to call
+     * `onlyOwner` functions anymore. Can only be called by the current owner.
+     *
+     * NOTE: Renouncing ownership will leave the contract without an owner,
+     * thereby removing any functionality that is only available to the owner.
+     */
+    function renounceOwnership() public virtual onlyOwner {
+        emit OwnershipTransferred(_owner, address(0));
+        _owner = address(0);
+    }
+
+    /**
+     * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     * Can only be called by the current owner.
+     */
+    function transferOwnership(address newOwner) public virtual onlyOwner {
+        require(newOwner != address(0), "Ownable: new owner is the zero address");
+        emit OwnershipTransferred(_owner, newOwner);
+        _owner = newOwner;
+    }
+}
+
+// File contracts/interfaces/ILixirStrategy.sol
+
+pragma solidity ^0.7.6;
+
+interface ILixirStrategy {
+  function initializeVault(ILixirVault _vault, bytes memory data) external;
+}
+
+
+// File @openzeppelin/contracts/proxy/Clones.sol@v3.4.1-solc-0.7-2
+
+
+pragma solidity >=0.6.0 <0.8.0;
+
+/**
+ * @dev https://eips.ethereum.org/EIPS/eip-1167[EIP 1167] is a standard for
+ * deploying minimal proxy contracts, also known as "clones".
+ *
+ * > To simply and cheaply clone contract functionality in an immutable way, this standard specifies
+ * > a minimal bytecode implementation that delegates all calls to a known, fixed address.
+ *
+ * The library includes functions to deploy a proxy using either `create` (traditional deployment) or `create2`
+ * (salted deterministic deployment). It also includes functions to predict the addresses of clones deployed using the
+ * deterministic method.
+ *
+ * _Available since v3.4._
+ */
+library Clones {
+    /**
+     * @dev Deploys and returns the address of a clone that mimics the behaviour of `master`.
+     *
+     * This function uses the create opcode, which should never revert.
+     */
+    function clone(address master) internal returns (address instance) {
+        // solhint-disable-next-line no-inline-assembly
+        assembly {
+            let ptr := mload(0x40)
+            mstore(ptr, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)
+            mstore(add(ptr, 0x14), shl(0x60, master))
+            mstore(add(ptr, 0x28), 0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000)
+            instance := create(0, ptr, 0x37)
+        }
+        require(instance != address(0), "ERC1167: create failed");
+    }
+
+    /**
+     * @dev Deploys and returns the address of a clone that mimics the behaviour of `master`.
+     *
+     * This function uses the create2 opcode and a `salt` to deterministically deploy
+     * the clone. Using the same `master` and `salt` multiple time will revert, since
+     * the clones cannot be deployed twice at the same address.
+     */
+    function cloneDeterministic(address master, bytes32 salt) internal returns (address instance) {
+        // solhint-disable-next-line no-inline-assembly
+        assembly {
+            let ptr := mload(0x40)
+            mstore(ptr, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)
+            mstore(add(ptr, 0x14), shl(0x60, master))
+            mstore(add(ptr, 0x28), 0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000)
+            instance := create2(0, ptr, 0x37, salt)
+        }
+        require(instance != address(0), "ERC1167: create2 failed");
+    }
+
+    /**
+     * @dev Computes the address of a clone deployed using {Clones-cloneDeterministic}.
+     */
+    function predictDeterministicAddress(address master, bytes32 salt, address deployer) internal pure returns (address predicted) {
+        // solhint-disable-next-line no-inline-assembly
+        assembly {
+            let ptr := mload(0x40)
+            mstore(ptr, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)
+            mstore(add(ptr, 0x14), shl(0x60, master))
+            mstore(add(ptr, 0x28), 0x5af43d82803e903d91602b57fd5bf3ff00000000000000000000000000000000)
+            mstore(add(ptr, 0x38), shl(0x60, deployer))
+            mstore(add(ptr, 0x4c), salt)
+            mstore(add(ptr, 0x6c), keccak256(ptr, 0x37))
+            predicted := keccak256(add(ptr, 0x37), 0x55)
+        }
+    }
+
+    /**
+     * @dev Computes the address of a clone deployed using {Clones-cloneDeterministic}.
+     */
+    function predictDeterministicAddress(address master, bytes32 salt) internal view returns (address predicted) {
+        return predictDeterministicAddress(master, salt, address(this));
+    }
+}
+
+
+// File contracts/LixirFactory.sol
+
+pragma solidity ^0.7.6;
+
+
+
+
+
+/**
+  @notice Factory for creating new vaults.
+ */
+contract LixirFactory is LixirBase {
+  using EnumerableSet for EnumerableSet.AddressSet;
+  address public immutable weth9;
+
+  mapping(address => mapping(address => EnumerableSet.AddressSet)) _vaults;
+
+  mapping(address => address) public vaultToImplementation;
+
+  event VaultCreated(
+    address indexed token0,
+    address indexed token1,
+    address indexed vault_impl,
+    address vault
+  );
+
+  constructor(address _registry) LixirBase(_registry) {
+    weth9 = address(LixirRegistry(_registry).weth9());
+  }
+
+  // view functions
+
+  /**
+    @notice Grab the number of vaults for the pair from `vaultsLengthForPair`
+    @param token0 address of the first token
+    @param token1 address of the second token
+    @param index the index of the vault.
+    @return the address of the vault for the token pair at the given index 
+   */
+  function vault(
+    address token0,
+    address token1,
+    uint256 index
+  ) public view returns (address) {
+    (token0, token1) = orderTokens(token0, token1);
+    return _vaults[token0][token1].at(index);
+  }
+
+  /**
+    @param token0 address of the first token
+    @param token1 address of the second token
+    @return number of vaults for the given token pair
+   */
+  function vaultsLengthForPair(address token0, address token1)
+    external
+    view
+    returns (uint256)
+  {
+    (token0, token1) = orderTokens(token0, token1);
+    return _vaults[token0][token1].length();
+  }
+
+  // external functions
+
+  /** 
+    @notice deploys a new vault for a pair of ERC20 tokens
+    @param name ERC20 metadata extension name of the vault token
+    @param symbol ERC20 metadata extension symbol of the vault token
+    @param token0 address of the first ERC20 token
+    @param token1 address of the second ERC20 token
+    @param vaultImplementation address of the vault to clone
+    @param strategist external address to be granted strategist role
+    @param keeper external address to be given the keeper role
+    @param strategy address of the strategy contract that will
+    rebalance this vault's positions
+    @return the address of the newly created vault
+   */
+  function createVault(
+    string memory name,
+    string memory symbol,
+    address token0,
+    address token1,
+    address vaultImplementation,
+    address strategist,
+    address keeper,
+    address strategy,
+    bytes memory data
+  )
+    external
+    onlyRole(LixirRoles.deployer_role)
+    hasRole(LixirRoles.strategy_role, strategy)
+    hasRole(LixirRoles.vault_implementation_role, vaultImplementation)
+    returns (address)
+  {
+    require(registry.hasRole(LixirRoles.keeper_role, keeper));
+    require(registry.hasRole(LixirRoles.strategist_role, strategist));
+    require(
+      token0 != weth9 && token1 != weth9,
+      'Use eth vault creator instead'
+    );
+    return
+      _createVault(
+        name,
+        symbol,
+        token0,
+        token1,
+        vaultImplementation,
+        strategist,
+        keeper,
+        strategy,
+        data
+      );
+  }
+
+  /** 
+  @notice deploys a new vault for a WETH/ERC20 pair
+  @dev ERC20 pairs require a different interface from ETH/ERC20
+  vaults. Otherwise this is the same as `createVault`
+  @param name ERC20 metadata extension name of the vault token
+  @param symbol ERC20 metadata extension symbol of the vault toke
+  @param token0 address of the first ERC20 token
+  @param token1 address of the second ERC20 token
+  @param ethVaultImplementation address of the ethVault to clone
+  @param strategist address of a (likely) user account to be granted
+  the strategist role
+  @param keeper address of a user to be given the keeper role
+  @param strategy address of the strategy contract that uses this
+  vault
+  @return the address of the newly created vault
+  */
+  function createVaultETH(
+    string memory name,
+    string memory symbol,
+    address token0,
+    address token1,
+    address ethVaultImplementation,
+    address strategist,
+    address keeper,
+    address strategy,
+    bytes memory data
+  )
+    external
+    onlyRole(LixirRoles.deployer_role)
+    hasRole(LixirRoles.strategy_role, strategy)
+    hasRole(LixirRoles.eth_vault_implementation_role, ethVaultImplementation)
+    returns (address)
+  {
+    require(registry.hasRole(LixirRoles.keeper_role, keeper));
+    require(registry.hasRole(LixirRoles.strategist_role, strategist));
+    require(
+      token0 == weth9 || token1 == weth9,
+      'No weth, use regular vault creator'
+    );
+    return
+      _createVault(
+        name,
+        symbol,
+        token0,
+        token1,
+        ethVaultImplementation,
+        strategist,
+        keeper,
+        strategy,
+        data
+      );
+  }
+
+  // internal functions
+
+  function orderTokens(address token0, address token1)
+    internal
+    pure
+    returns (address, address)
+  {
+    require(token0 != token1, 'Duplicate tokens');
+    (token0, token1) = token0 < token1 ? (token0, token1) : (token1, token0);
+    return (token0, token1);
+  }
+
+
+  function _createVault(
+    string memory name,
+    string memory symbol,
+    address token0,
+    address token1,
+    address vaultImplementation,
+    address strategist,
+    address keeper,
+    address strategy,
+    bytes memory data
+  ) internal returns (address) {
+    (token0, token1) = orderTokens(token0, token1);
+    bytes32 salt =
+      keccak256(
+        abi.encodePacked(token0, token1, _vaults[token0][token1].length())
+      );
+    ILixirVault _vault =
+      ILixirVault(Clones.cloneDeterministic(vaultImplementation, salt));
+    _vault.initialize(
+      name,
+      symbol,
+      token0,
+      token1,
+      strategist,
+      keeper,
+      strategy
+    );
+    _vaults[token0][token1].add(address(_vault));
+    vaultToImplementation[address(_vault)] = vaultImplementation;
+    registry.grantRole(LixirRoles.vault_role, address(_vault));
+    ILixirStrategy(strategy).initializeVault(_vault, data);
+    emit VaultCreated(token0, token1, vaultImplementation, address(_vault));
+    return address(_vault);
+  }
+}
+
+
+// File contracts/LixirStrategySimpleGWAP.sol
+
+pragma solidity ^0.7.6;
+
+
+
+
+contract LixirStrategySimpleGWAP is LixirBase, ILixirStrategy {
+  constructor(address _registry) LixirBase(_registry) {}
+
+  mapping(address => VaultData) public vaultDatas;
+
+  /**
+   * @notice Struct for containing data pertaining to strategy vaults
+   * @param TICK_SHORT_DURATION how long we want to wait to get a TWAP to prevent sandwiching
+   * @param MAX_TICK_DIFF check on the short_gwap and expected tick to prevent sandwiching
+   * @param mainSpread tick width of the main position
+   * @param rangeSpread tick width of the range position
+   * @param timestamp keeping track of last time of rebalance or config
+   * @param tickCumulative last cumulative tick value from pool
+   */
+  struct VaultData {
+    uint32 TICK_SHORT_DURATION;
+    int24 MAX_TICK_DIFF;
+    int24 mainSpread;
+    int24 rangeSpread;
+    uint32 timestamp;
+    int56 tickCumulative;
+  }
+
+  event VaultConfigUpdate(
+    address indexed vault,
+    uint32 TICK_SHORT_DURATION,
+    int24 MAX_TICK_DIFF,
+    int24 mainSpread,
+    int24 rangeSpread
+  );
+
+  /**
+    @notice adds a vault to this strategy contract.
+    @dev called externally by the `LixirFactory` when you `createVault`
+   */
+  function initializeVault(ILixirVault _vault, bytes memory data)
+    external
+    override
+    onlyRole(LixirRoles.factory_role)
+  {
+    (
+      uint24 fee,
+      uint32 TICK_SHORT_DURATION,
+      int24 MAX_TICK_DIFF,
+      int24 mainSpread,
+      int24 rangeSpread
+    ) = abi.decode(data, (uint24, uint32, int24, int24, int24));
+    _configureVault(
+      _vault,
+      fee,
+      TICK_SHORT_DURATION,
+      MAX_TICK_DIFF,
+      mainSpread,
+      rangeSpread
+    );
+  }
+
+  function setTickShortDuration(ILixirVault _vault, uint32 TICK_SHORT_DURATION)
+    external
+    onlyRole(LixirRoles.strategist_role)
+    hasRole(LixirRoles.vault_role, address(_vault))
+  {
+    require(msg.sender == _vault.strategist());
+    require(
+      TICK_SHORT_DURATION >= 30,
+      'TICK_SHORT_DURATION must be greater than 30 seconds'
+    );
+    VaultData storage vaultData = vaultDatas[address(_vault)];
+    vaultData.TICK_SHORT_DURATION = TICK_SHORT_DURATION;
+    emit VaultConfigUpdate(
+      address(_vault),
+      TICK_SHORT_DURATION,
+      vaultData.MAX_TICK_DIFF,
+      vaultData.mainSpread,
+      vaultData.rangeSpread
+    );
+  }
+
+  function setMaxTickDiff(ILixirVault _vault, int24 MAX_TICK_DIFF)
+    external
+    onlyRole(LixirRoles.strategist_role)
+    hasRole(LixirRoles.vault_role, address(_vault))
+  {
+    require(msg.sender == _vault.strategist());
+    require(
+      MAX_TICK_DIFF >= 0,
+      'MAX_TICK_DIFF must be greater than or equal to 0'
+    );
+    VaultData storage vaultData = vaultDatas[address(_vault)];
+    vaultData.MAX_TICK_DIFF = MAX_TICK_DIFF;
+    emit VaultConfigUpdate(
+      address(_vault),
+      vaultData.TICK_SHORT_DURATION,
+      MAX_TICK_DIFF,
+      vaultData.mainSpread,
+      vaultData.rangeSpread
+    );
+  }
+
+  /**
+    @notice sets the tick width of the main and range positions when rebalancing
+   */
+  function setSpreads(
+    ILixirVault _vault,
+    int24 mainSpread,
+    int24 rangeSpread
+  )
+    external
+    onlyRole(LixirRoles.strategist_role)
+    hasRole(LixirRoles.vault_role, address(_vault))
+  {
+    require(msg.sender == _vault.strategist());
+    require(mainSpread >= 0);
+    require(rangeSpread >= 0);
+    VaultData storage vaultData = vaultDatas[address(_vault)];
+    vaultData.mainSpread = mainSpread;
+    vaultData.rangeSpread = rangeSpread;
+    emit VaultConfigUpdate(
+      address(_vault),
+      vaultData.TICK_SHORT_DURATION,
+      vaultData.MAX_TICK_DIFF,
+      mainSpread,
+      rangeSpread
+    );
+  }
+
+  /**
+    @notice function for strategist to set all `VaultData` in one call
+   */
+  function configureVault(
+    ILixirVault _vault,
+    uint24 fee,
+    uint32 TICK_SHORT_DURATION,
+    int24 MAX_TICK_DIFF,
+    int24 mainSpread,
+    int24 rangeSpread
+  )
+    external
+    onlyRole(LixirRoles.strategist_role)
+    hasRole(LixirRoles.vault_role, address(_vault))
+  {
+    require(msg.sender == _vault.strategist());
+    _configureVault(
+      _vault,
+      fee,
+      TICK_SHORT_DURATION,
+      MAX_TICK_DIFF,
+      mainSpread,
+      rangeSpread
+    );
+  }
+
+  function _configureVault(
+    ILixirVault _vault,
+    uint24 fee,
+    uint32 TICK_SHORT_DURATION,
+    int24 MAX_TICK_DIFF,
+    int24 mainSpread,
+    int24 rangeSpread
+  ) internal {
+    require(TICK_SHORT_DURATION >= 30);
+    require(MAX_TICK_DIFF > 0);
+    require(mainSpread >= 0);
+    require(rangeSpread >= 0);
+    require(_vault.strategy() == address(this), 'Incorrect vault strategy');
+    VaultData storage vaultData = vaultDatas[address(_vault)];
+    vaultData.TICK_SHORT_DURATION = TICK_SHORT_DURATION;
+    vaultData.MAX_TICK_DIFF = MAX_TICK_DIFF;
+    vaultData.mainSpread = mainSpread;
+    vaultData.rangeSpread = rangeSpread;
+    if (
+      block.timestamp - vaultData.timestamp > 60 * 60 * 24 ||
+      fee != _vault.activeFee()
+    ) {
+      IUniswapV3Pool newPool = IUniswapV3Pool(
+        PoolAddress.computeAddress(
+          registry.uniV3Factory(),
+          PoolAddress.getPoolKey(
+            address(_vault.token0()),
+            address(_vault.token1()),
+            fee
+          )
+        )
+      );
+      (int24 short_gwap, int56 lastShortTicksCumulative) = getTickShortGwap(
+        newPool,
+        TICK_SHORT_DURATION
+      );
+      vaultData.tickCumulative = lastShortTicksCumulative;
+      vaultData.timestamp = uint32(block.timestamp - TICK_SHORT_DURATION);
+      (uint160 sqrtRatioX96, int24 tick) = getSqrtRatioX96AndTick(newPool);
+      // neither check tick nor _rebalance read timestamp or tickCumulative
+      // so we don't have to update the cache
+      checkTick(tick, short_gwap, vaultData.MAX_TICK_DIFF);
+      emit VaultConfigUpdate(
+        address(_vault),
+        TICK_SHORT_DURATION,
+        MAX_TICK_DIFF,
+        mainSpread,
+        rangeSpread
+      );
+      _rebalance(
+        _vault,
+        newPool,
+        sqrtRatioX96,
+        tick,
+        short_gwap,
+        mainSpread,
+        rangeSpread
+      );
+    }
+  }
+
+  /**
+    @dev Calculates short term TWAP for rebalance sanity checks
+    @return tick_gwap short term TWAP
+   */
+  function getTickShortGwap(IUniswapV3Pool pool, uint32 TICK_SHORT_DURATION)
+    internal
+    view
+    returns (int24 tick_gwap, int56 lastShortTicksCumulative)
+  {
+    uint32[] memory secondsAgos = new uint32[](2);
+    secondsAgos[0] = TICK_SHORT_DURATION;
+    secondsAgos[1] = 0;
+    (int56[] memory ticksCumulative, ) = pool.observe(secondsAgos);
+    lastShortTicksCumulative = ticksCumulative[0];
+    // compute the time weighted tick, rounded towards negative infinity
+    int56 numerator = (ticksCumulative[1] - lastShortTicksCumulative);
+    int56 timeWeightedTick = numerator / int56(TICK_SHORT_DURATION);
+    if (numerator < 0 && numerator % int56(TICK_SHORT_DURATION) != 0) {
+      timeWeightedTick--;
+    }
+    tick_gwap = int24(timeWeightedTick);
+    require(int56(tick_gwap) == timeWeightedTick, 'Tick over/underflow');
+  }
+
+  /**
+    @dev Sanity checks on current tick, expected tick from keeper, and GWAP tick
+    @param expectedTick Expected tick passed by keeper
+   */
+  function checkTick(
+    int24 tick,
+    int24 expectedTick,
+    int24 MAX_TICK_DIFF
+  ) internal pure {
+    int24 diff = expectedTick >= tick
+      ? expectedTick - tick
+      : tick - expectedTick;
+    require(diff <= MAX_TICK_DIFF, 'Tick diff to great');
+  }
+
+  function getMainTicks(
+    int24 tick_gwap,
+    int24 tickSpacing,
+    int24 spread
+  ) internal pure returns (int24 lower, int24 upper) {
+    lower = roundTickDown(tick_gwap - spread, tickSpacing);
+    upper = roundTickUp(tick_gwap + spread, tickSpacing);
+    require(lower < upper, 'Main ticks are the same');
+  }
+
+  function getRangeTicks(
+    uint160 sqrtRatioX96,
+    int24 tick,
+    int24 tickSpacing,
+    int24 spread
+  )
+    internal
+    pure
+    returns (
+      int24 lower0,
+      int24 upper0,
+      int24 lower1,
+      int24 upper1
+    )
+  {
+    lower0 = roundTickUp(
+      (TickMath.getSqrtRatioAtTick(tick) == sqrtRatioX96) ? tick : tick + 1,
+      tickSpacing
+    );
+    upper0 = roundTickUp(lower0 + spread, tickSpacing);
+
+    upper1 = roundTickDown(tick, tickSpacing);
+    lower1 = roundTickDown(upper1 - spread, tickSpacing);
+    require(lower0 < upper0, 'Range0 ticks are the same');
+    require(lower1 < upper1, 'Range1 ticks are the same');
+  }
+
+  /**
+    @dev Calculates long term TWAP for setting ranges
+    @return tick_gwap Long term TWAP
+   */
+  function getTickGwapUpdateCumulative(
+    IUniswapV3Pool pool,
+    VaultData storage vaultData
+  ) internal returns (int24 tick_gwap) {
+    uint32[] memory secondsAgos = new uint32[](1);
+    secondsAgos[0] = 0;
+    (int56[] memory ticksCumulative, ) = pool.observe(secondsAgos);
+    int56 tickCumulative = ticksCumulative[0];
+    // compute the time weighted tick, rounded towards negative infinity
+    int56 numerator = (tickCumulative - vaultData.tickCumulative);
+    int56 secondsAgo = int56(block.timestamp - vaultData.timestamp);
+    int56 timeWeightedTick = numerator / secondsAgo;
+    if (numerator < 0 && numerator % secondsAgo != 0) {
+      timeWeightedTick--;
+    }
+    tick_gwap = int24(timeWeightedTick);
+    require(int56(tick_gwap) == timeWeightedTick, 'Tick over/underflow');
+    vaultData.timestamp = uint32(block.timestamp);
+    vaultData.tickCumulative = tickCumulative;
+  }
+
+  /**
+    @notice rebalances the vault to the given tick. In the process
+    it collects UniV3 fees and repools them.
+    @dev only keeper role can call
+
+   */
+  function rebalance(ILixirVault vault, int24 expectedTick)
+    external
+    hasRole(LixirRoles.vault_role, address(vault))
+    onlyRole(LixirRoles.keeper_role)
+  {
+    VaultData storage vaultData = vaultDatas[address(vault)];
+    require(vaultData.timestamp > 0);
+    IUniswapV3Pool pool = vault.activePool();
+    (int24 short_gwap, ) = getTickShortGwap(
+      pool,
+      vaultData.TICK_SHORT_DURATION
+    );
+    (uint160 sqrtRatioX96, int24 tick) = getSqrtRatioX96AndTick(pool);
+    int24 MAX_TICK_DIFF = vaultData.MAX_TICK_DIFF;
+    checkTick(tick, short_gwap, MAX_TICK_DIFF);
+    checkTick(tick, expectedTick, MAX_TICK_DIFF);
+    int24 tick_gwap = getTickGwapUpdateCumulative(pool, vaultData);
+    _rebalance(
+      vault,
+      pool,
+      sqrtRatioX96,
+      tick,
+      tick_gwap,
+      vaultData.mainSpread,
+      vaultData.rangeSpread
+    );
+  }
+
+  function _rebalance(
+    ILixirVault vault,
+    IUniswapV3Pool pool,
+    uint160 sqrtRatioX96,
+    int24 tick,
+    int24 tick_gwap,
+    int24 mainSpread,
+    int24 rangeSpread
+  ) internal {
+    int24 mlower;
+    int24 mupper;
+    int24 rlower0;
+    int24 rupper0;
+    int24 rlower1;
+    int24 rupper1;
+    uint24 fee;
+    {
+      int24 tickSpacing = pool.tickSpacing();
+      (mlower, mupper) = getMainTicks(tick_gwap, tickSpacing, mainSpread);
+      (rlower0, rupper0, rlower1, rupper1) = getRangeTicks(
+        sqrtRatioX96,
+        tick,
+        tickSpacing,
+        rangeSpread
+      );
+      fee = pool.fee();
+    }
+    vault.rebalance(mlower, mupper, rlower0, rupper0, rlower1, rupper1, fee);
+  }
+
+  /**
+   * @dev Queries activePool for current square root price and current tick
+   * @return _sqrtRatioX96 Current square root price
+   * @return _tick Current tick
+   */
+  function getSqrtRatioX96AndTick(IUniswapV3Pool pool)
+    internal
+    view
+    returns (uint160 _sqrtRatioX96, int24 _tick)
+  {
+    (_sqrtRatioX96, _tick, , , , , ) = pool.slot0();
+  }
+
+  function max(int24 x, int24 y) internal pure returns (int24) {
+    return y < x ? x : y;
+  }
+
+  function min(int24 x, int24 y) internal pure returns (int24) {
+    return x < y ? x : y;
+  }
+
+  function roundTickDown(int24 tick, int24 tickSpacing)
+    internal
+    pure
+    returns (int24)
+  {
+    int24 tickMod = tick % tickSpacing;
+    int24 roundedTick;
+    if (tickMod == 0) {
+      roundedTick = tick;
+    } else if (0 < tick) {
+      roundedTick = tick - tickMod;
+    } else {
+      roundedTick = tick - tickSpacing + (-tickMod);
+    }
+    return max(roundedTick, TickMath.MIN_TICK);
+  }
+
+  function roundTickUp(int24 tick, int24 tickSpacing)
+    internal
+    pure
+    returns (int24)
+  {
+    int24 tickDown = roundTickDown(tick, tickSpacing);
+    return
+      min(tick == tickDown ? tick : tickDown + tickSpacing, TickMath.MAX_TICK);
+  }
+}
+

@@ -7,6 +7,9 @@
 @notice Controls liquidity gauges and the issuance of coins through the gauges
 """
 
+interface LixirRegistry:
+    def isGovOrDelegate(account: address) -> bool: view
+
 # 7 * 86400 seconds - all future times are rounded by week
 WEEK: constant(uint256) = 604800
 
@@ -14,13 +17,6 @@ WEEK: constant(uint256) = 604800
 struct Point:
     bias: uint256
     slope: uint256
-
-
-event CommitOwnership:
-    admin: address
-
-event ApplyOwnership:
-    admin: address
 
 event AddType:
     name: String[64]
@@ -46,8 +42,7 @@ event NewGauge:
 
 MULTIPLIER: constant(uint256) = 10 ** 18
 
-admin: public(address)  # Can and will be a smart contract
-future_admin: public(address)  # Can and will be a smart contract
+registry: public(address)  # Can and will be a smart contract
 
 token: public(address)  # CRV token
 voting_escrow: public(address)  # Voting escrow
@@ -88,42 +83,20 @@ time_type_weight: public(uint256[1000000000])  # type_id -> last scheduled time 
 
 
 @external
-def __init__(_token: address, _voting_escrow: address):
+def __init__(_registry: address, _token: address, _voting_escrow: address):
     """
     @notice Contract constructor
+    @param _registry Registry contract
     @param _token `ERC20CRV` contract address
     @param _voting_escrow `VotingEscrow` contract address
     """
     assert _token != ZERO_ADDRESS
     assert _voting_escrow != ZERO_ADDRESS
 
-    self.admin = msg.sender
+    self.registry = _registry
     self.token = _token
     self.voting_escrow = _voting_escrow
     self.time_total = block.timestamp / WEEK * WEEK
-
-
-@external
-def commit_transfer_ownership(addr: address):
-    """
-    @notice Transfer ownership of GaugeController to `addr`
-    @param addr Address to have ownership transferred to
-    """
-    assert msg.sender == self.admin  # dev: admin only
-    self.future_admin = addr
-    log CommitOwnership(addr)
-
-
-@external
-def apply_transfer_ownership():
-    """
-    @notice Apply pending ownership transfer
-    """
-    assert msg.sender == self.admin  # dev: admin only
-    _admin: address = self.future_admin
-    assert _admin != ZERO_ADDRESS  # dev: admin not set
-    self.admin = _admin
-    log ApplyOwnership(_admin)
 
 
 @external
@@ -272,7 +245,7 @@ def add_gauge(addr: address, gauge_type: int128, weight: uint256 = 0):
     @param gauge_type Gauge type
     @param weight Gauge weight
     """
-    assert msg.sender == self.admin
+    assert LixirRegistry(self.registry).isGovOrDelegate(msg.sender)
     assert (gauge_type >= 0) and (gauge_type < self.n_gauge_types)
     assert self.gauge_types_[addr] == 0  # dev: cannot add the same gauge twice
 
@@ -401,7 +374,7 @@ def add_type(_name: String[64], weight: uint256 = 0):
     @param _name Name of gauge type
     @param weight Weight of gauge type
     """
-    assert msg.sender == self.admin
+    assert LixirRegistry(self.registry).isGovOrDelegate(msg.sender)
     type_id: int128 = self.n_gauge_types
     self.gauge_type_names[type_id] = _name
     self.n_gauge_types = type_id + 1
@@ -417,7 +390,7 @@ def change_type_weight(type_id: int128, weight: uint256):
     @param type_id Gauge type id
     @param weight New Gauge weight
     """
-    assert msg.sender == self.admin
+    assert LixirRegistry(self.registry).isGovOrDelegate(msg.sender)
     self._change_type_weight(type_id, weight)
 
 
@@ -453,7 +426,7 @@ def change_gauge_weight(addr: address, weight: uint256):
     @param addr `GaugeController` contract address
     @param weight New Gauge weight
     """
-    assert msg.sender == self.admin
+    assert LixirRegistry(self.registry).isGovOrDelegate(msg.sender)
     self._change_gauge_weight(addr, weight)
 
 

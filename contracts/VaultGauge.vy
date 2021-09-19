@@ -32,6 +32,10 @@ interface VotingEscrow:
 interface ERC20Extended:
     def symbol() -> String[26]: view
 
+interface LixirRegistry:
+    def isGovOrDelegate(account: address) -> bool: view
+
+
 # Interface for checking whether address belongs to a whitelisted
 # type of a smart wallet.
 # When new types are added - the whole contract is changed
@@ -55,12 +59,6 @@ event UpdateLiquidityLimit:
     original_supply: uint256
     working_balance: uint256
     working_supply: uint256
-
-event CommitOwnership:
-    admin: address
-
-event ApplyOwnership:
-    admin: address
 
 event Transfer:
     _from: indexed(address)
@@ -116,17 +114,16 @@ distribution_rate: public(uint256) # inflation_rate: public(uint256)
 future_smart_wallet_checker: public(address)
 smart_wallet_checker: public(address) # veCRV uses this on mainnet: 0xca719728ef172d0961768581fdf35cb116e0b7a4
 
-admin: public(address)
-future_admin: public(address)  # Can and will be a smart contract
+registry: public(address)
 is_killed: public(bool)
 
 @external
-def __init__(_lp_token: address, _distributor: address, _admin: address):
+def __init__(_lp_token: address, _distributor: address, _registry: address):
     """
     @notice Contract constructor
     @param _lp_token Liquidity Pool contract address
     @param _distributor Distributor contract address
-    @param _admin Admin who can kill the gauge
+    @param _registry Registry
     """
 
     symbol: String[26] = ERC20Extended(_lp_token).symbol()
@@ -138,7 +135,7 @@ def __init__(_lp_token: address, _distributor: address, _admin: address):
 
     self.lp_token = _lp_token
     self.distributor = _distributor
-    self.admin = _admin
+    self.registry = _registry
     self.lix_token = lix_token
     self.controller = controller
     self.voting_escrow = Controller(controller).voting_escrow()
@@ -170,7 +167,7 @@ def commit_smart_wallet_checker(addr: address):
     @notice Set an external contract to check for approved smart contract wallets
     @param addr Address of Smart contract checker
     """
-    assert msg.sender == self.admin
+    assert LixirRegistry(self.registry).isGovOrDelegate(msg.sender)
     self.future_smart_wallet_checker = addr
 
 
@@ -179,7 +176,7 @@ def apply_smart_wallet_checker():
     """
     @notice Apply setting external contract to check approved smart contract wallets
     """
-    assert msg.sender == self.admin
+    assert LixirRegistry(self.registry).isGovOrDelegate(msg.sender)
     self.smart_wallet_checker = self.future_smart_wallet_checker
 
 
@@ -521,31 +518,6 @@ def set_killed(_is_killed: bool):
     @dev When killed, the gauge always yields a rate of 0 and so cannot mint CRV
     @param _is_killed Killed status to set
     """
-    assert msg.sender == self.admin
+    assert LixirRegistry(self.registry).isGovOrDelegate(msg.sender)
 
     self.is_killed = _is_killed
-
-
-@external
-def commit_transfer_ownership(addr: address):
-    """
-    @notice Transfer ownership of GaugeController to `addr`
-    @param addr Address to have ownership transferred to
-    """
-    assert msg.sender == self.admin  # dev: admin only
-
-    self.future_admin = addr
-    log CommitOwnership(addr)
-
-
-@external
-def accept_transfer_ownership():
-    """
-    @notice Accept a pending ownership transfer
-    """
-    _admin: address = self.future_admin
-    assert msg.sender == _admin  # dev: future admin only
-
-    self.admin = _admin
-    log ApplyOwnership(_admin)
-

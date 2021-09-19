@@ -52,17 +52,14 @@ interface ERC20:
 interface SmartWalletChecker:
     def check(addr: address) -> bool: nonpayable
 
+interface LixirRegistry:
+    def isGovOrDelegate(account: address) -> bool: view
+
+
 DEPOSIT_FOR_TYPE: constant(int128) = 0
 CREATE_LOCK_TYPE: constant(int128) = 1
 INCREASE_LOCK_AMOUNT: constant(int128) = 2
 INCREASE_UNLOCK_TIME: constant(int128) = 3
-
-
-event CommitOwnership:
-    admin: address
-
-event ApplyOwnership:
-    admin: address
 
 event Deposit:
     provider: indexed(address)
@@ -110,12 +107,10 @@ decimals: public(uint256)
 future_smart_wallet_checker: public(address)
 smart_wallet_checker: public(address) # veCRV uses this on mainnet: 0xca719728ef172d0961768581fdf35cb116e0b7a4
 
-admin: public(address)  # Can and will be a smart contract
-future_admin: public(address)
-
+registry: public(address)  # Can and will be a smart contract
 
 @external
-def __init__(token_addr: address, _name: String[64], _symbol: String[32], _version: String[32]):
+def __init__(_registry: address, token_addr: address, _name: String[64], _symbol: String[32], _version: String[32]):
     """
     @notice Contract constructor
     @param token_addr `ERC20CRV` token address
@@ -123,7 +118,7 @@ def __init__(token_addr: address, _name: String[64], _symbol: String[32], _versi
     @param _symbol Token symbol
     @param _version Contract version - required for Aragon compatibility
     """
-    self.admin = msg.sender
+    self.registry = _registry
     self.token = token_addr
     self.point_history[0].blk = block.number
     self.point_history[0].ts = block.timestamp
@@ -138,37 +133,13 @@ def __init__(token_addr: address, _name: String[64], _symbol: String[32], _versi
     self.symbol = _symbol
     self.version = _version
 
-
-@external
-def commit_transfer_ownership(addr: address):
-    """
-    @notice Transfer ownership of VotingEscrow contract to `addr`
-    @param addr Address to have ownership transferred to
-    """
-    assert msg.sender == self.admin  # dev: admin only
-    self.future_admin = addr
-    log CommitOwnership(addr)
-
-
-@external
-def apply_transfer_ownership():
-    """
-    @notice Apply ownership transfer
-    """
-    assert msg.sender == self.admin  # dev: admin only
-    _admin: address = self.future_admin
-    assert _admin != ZERO_ADDRESS  # dev: admin not set
-    self.admin = _admin
-    log ApplyOwnership(_admin)
-
-
 @external
 def commit_smart_wallet_checker(addr: address):
     """
     @notice Set an external contract to check for approved smart contract wallets
     @param addr Address of Smart contract checker
     """
-    assert msg.sender == self.admin
+    assert LixirRegistry(self.registry).isGovOrDelegate(msg.sender)
     self.future_smart_wallet_checker = addr
 
 
@@ -177,7 +148,7 @@ def apply_smart_wallet_checker():
     """
     @notice Apply setting external contract to check approved smart contract wallets
     """
-    assert msg.sender == self.admin
+    assert LixirRegistry(self.registry).isGovOrDelegate(msg.sender)
     self.smart_wallet_checker = self.future_smart_wallet_checker
 
 

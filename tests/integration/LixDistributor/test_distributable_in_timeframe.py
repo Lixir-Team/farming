@@ -73,4 +73,5 @@ def test_available_to_distribute(chain, web3, distributor, duration):
     chain.mine()
 
     expected = initial_supply + (web3.eth.getBlock("latest")["timestamp"] - creation_time) * rate
-    assert distributor.available_to_distribute() == expected
+    actual = distributor.available_to_distribute()
+    assert actual == expected or actual + rate == expected

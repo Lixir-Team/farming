@@ -80,9 +80,9 @@ def token(ERC20, accounts):
 
 
 @pytest.fixture(scope="module")
-def voting_escrow(VotingEscrow, accounts, token):
+def voting_escrow(VotingEscrow, registry, accounts, token):
     yield VotingEscrow.deploy(
-        token, "Voting-escrowed CRV", "veCRV", "veCRV_0.99", {"from": accounts[0]}
+        registry, token, "Voting-escrowed CRV", "veCRV", "veCRV_0.99", {"from": accounts[0]}
     )
 
 
@@ -92,8 +92,8 @@ def smart_wallet_whitelist(SmartWalletWhitelist, voting_escrow, accounts):
 
 
 @pytest.fixture(scope="module")
-def gauge_controller(GaugeController, accounts, token, voting_escrow):
-    yield GaugeController.deploy(token, voting_escrow, {"from": accounts[0]})
+def gauge_controller(GaugeController, registry, accounts, token, voting_escrow):
+    yield GaugeController.deploy(registry, token, voting_escrow, {"from": accounts[0]})
 
 
 # @pytest.fixture(scope="module")
@@ -102,8 +102,8 @@ def gauge_controller(GaugeController, accounts, token, voting_escrow):
 
 
 @pytest.fixture(scope="module")
-def distributor(LixDistributor, accounts, gauge_controller, token):
-    dist = LixDistributor.deploy(token, gauge_controller, accounts[0], accounts[0], {"from": accounts[0]})
+def distributor(LixDistributor, accounts, gauge_controller, token, registry):
+    dist = LixDistributor.deploy(token, gauge_controller, registry, {"from": accounts[0]})
     token.transfer(dist, INITIAL_SUPPLY * 10 ** 18, {"from":accounts[0]})
     yield dist
 
@@ -151,8 +151,8 @@ def distributor(LixDistributor, accounts, gauge_controller, token):
 
 
 @pytest.fixture(scope="module")
-def vault_gauge(VaultGauge, alice, lixir_vault, distributor, smart_wallet_whitelist):
-    vault = VaultGauge.deploy(lixir_vault, distributor, alice, {"from": alice})
+def vault_gauge(VaultGauge, alice, registry, lixir_vault, distributor, smart_wallet_whitelist):
+    vault = VaultGauge.deploy(lixir_vault, distributor, registry, {"from": alice})
     vault.commit_smart_wallet_checker(smart_wallet_whitelist, {"from": alice})
     vault.apply_smart_wallet_checker({"from": alice})
     yield vault
@@ -195,12 +195,12 @@ def vault_gauge(VaultGauge, alice, lixir_vault, distributor, smart_wallet_whitel
 
 
 @pytest.fixture(scope="module")
-def three_gauges(VaultGauge, accounts, lixir_vault, distributor):
+def three_gauges(VaultGauge, registry, accounts, lixir_vault, distributor):
     contracts = [
         VaultGauge.deploy(
             lixir_vault,
             distributor,
-            accounts[0],
+            registry,
             {"from": accounts[0]}
         )
         for _ in range(3)
@@ -265,13 +265,20 @@ def local(accounts):
 
 
 @pytest.fixture(scope="module")
-def coin_a(ERC20, accounts):
-    yield ERC20.deploy("Coin A", "USDA", 18, 0, {"from": accounts[0]})
+def coins(ERC20, accounts):
+    A = ERC20.deploy("Coin", "USD", 18, 0, {"from": accounts[0]})
+    B = ERC20.deploy("Coin", "GBP", 18, 0, {"from": accounts[0]})
+    yield (A, B) if int(str(A), 16) < int(str(B), 16) else (B, A)
 
 
 @pytest.fixture(scope="module")
-def coin_b(ERC20, accounts):
-    yield ERC20.deploy("Coin A", "USDA", 18, 0, {"from": accounts[0]})
+def coin_a(coins):
+    yield coins[0]
+
+
+@pytest.fixture(scope="module")
+def coin_b(coins):
+    yield coins[1]
 
 
 # @pytest.fixture(scope="module")
@@ -296,9 +303,13 @@ def coin_b(ERC20, accounts):
 
 @pytest.fixture(scope="module")
 def registry(LixirRegistry, accounts):
-    yield LixirRegistry.deploy(
+    registry = LixirRegistry.deploy(
         accounts[0], accounts[0], accounts[0], accounts[0], {"from": accounts[0]}
     )
+    registry.grantRole(registry.strategy_role(), accounts[0], {"from": accounts[0]})
+    registry.grantRole(registry.strategist_role(), accounts[0], {"from": accounts[0]})
+    registry.grantRole(registry.keeper_role(), accounts[0], {"from": accounts[0]})
+    yield registry
 
 
 @pytest.fixture(scope="module")
@@ -309,12 +320,12 @@ def lixir_vault(LixirVault, registry, coin_a, coin_b, accounts):
 
 
 @pytest.fixture(scope="module")
-def fee_distributor(FeeDistributor, voting_escrow, accounts, coin_a, chain):
+def fee_distributor(FeeDistributor, registry, voting_escrow, accounts, coin_a, chain):
     def f(t=None):
         if not t:
             t = chain.time()
         return FeeDistributor.deploy(
-            voting_escrow, t, coin_a, accounts[0], accounts[0], {"from": accounts[0]}
+            voting_escrow, t, coin_a, registry, {"from": accounts[0]}
         )
 
     yield f
