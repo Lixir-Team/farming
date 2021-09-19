@@ -503,7 +503,6 @@ def decreaseAllowance(_spender: address, _subtracted_value: uint256) -> bool:
     @param _subtracted_value The amount of to decrease the allowance
     @return bool success
     """
-    self.assert_not_contract(_spender)
     allowance: uint256 = self.allowance[msg.sender][_spender] - _subtracted_value
     self.allowance[msg.sender][_spender] = allowance
 
