@@ -15,6 +15,7 @@ from brownie import (
 from brownie.network.contract import Contract
 from brownie.network import accounts
 from .helpers.chain_to_name import chain_to_name
+import os
 
 StakingDependenciesConfig = namedtuple("LixirDependenciesConfig", ["lix", "registry"])
 
@@ -120,12 +121,12 @@ class StakingSystem:
 
 
 
-accounts = a.from_mnemonic(os.getenv("MNEMONIC"), 10)
+mnem_accounts = accounts.from_mnemonic(os.getenv("MNEMONIC"), 10)
 
 
 def try_get_signer(account):
     try:
-        return next(v for v in accounts if v == account)
+        return next(v for v in mnem_accounts if v == account)
     except:
         return account
 
