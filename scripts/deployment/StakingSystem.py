@@ -99,7 +99,7 @@ class StakingSystem:
             dep_config,
             StakingSystemConfig(
                 escrow=VotingEscrow.at(config.escrow),
-                fee_distributor=FeeDistributor.at(config.fee_distributor),
+                fee_distributor=FeeDistributor.at(config.fee_distributor) if config.fee_distributor else None,
                 gauge_controller=GaugeController.at(config.gauge_controller),
                 lix_distributor=LixDistributor.at(config.lix_distributor),
             ),
