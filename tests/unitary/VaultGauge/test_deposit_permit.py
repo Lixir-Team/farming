@@ -12,12 +12,38 @@ class Permit(EIP712Message):
     _version_: "string"
     _chainId_: "uint256"
     _verifyingContract_: "address"
-
     owner: "address"
     spender: "address"
     value: "uint256"
     nonce: "uint256"
     deadline: "uint256"
+
+
+def create_calldata(token, owner, spender, value, deadline):
+    message = Permit(
+        _name_= token.name(),
+        _version_='1',
+        _chainId_=chain.id,
+        _verifyingContract_=token.address,
+
+        owner=owner.address,
+        spender=spender.address,
+        value=value,
+        nonce=token.nonces(owner),
+        deadline=deadline
+    )
+    signed = owner.sign_message(message)
+    calldata = eth_abi.encode_single(
+        "(uint256,uint8,bytes32,bytes32)",
+        [
+            deadline,
+            signed.v,
+            to_bytes(signed.r),
+            to_bytes(signed.s)
+        ]
+    ).hex()
+    return calldata
+
 
 
 def test_permit(local, lixir_vault, vault_gauge, web3, chain):

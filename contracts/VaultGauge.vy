@@ -369,8 +369,10 @@ def deposit(_value: uint256, _addr: address = msg.sender, args: Bytes[128] = b""
                     args
                 )
             )
+            ERC20(self.lp_token).transferFrom(_addr, self, _value)
+        else:
+            ERC20(self.lp_token).transferFrom(msg.sender, self, _value)
 
-        ERC20(self.lp_token).transferFrom(msg.sender, self, _value)
 
     log Deposit(_addr, _value)
     log Transfer(ZERO_ADDRESS, _addr, _value)

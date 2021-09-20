@@ -32,6 +32,7 @@ StakingSystemConfig = namedtuple(
     ],
 )
 
+
 class StakingSystem:
     __create_key = object()
 
@@ -40,7 +41,7 @@ class StakingSystem:
         create_key,
         deployer,
         dep_config: StakingDependenciesConfig,
-        system_config: StakingSystemConfig
+        system_config: StakingSystemConfig,
     ):
         assert create_key == self.__create_key
 
@@ -56,35 +57,50 @@ class StakingSystem:
         self.gauge_controller = system_config.gauge_controller
         self.lix_distributor = system_config.lix_distributor
 
-
     def deploy_gauge(self, lp_token):
-        return VaultGauge.deploy(lp_token, self.lix_distributor, self.registry, {"from": self.deployer, "gas": 5000000})
-
+        return VaultGauge.deploy(
+            lp_token,
+            self.lix_distributor,
+            self.registry,
+            {"from": self.deployer, "gas": 5000000, "priority_fee": chain.priority_fee},
+        )
 
     def add_gauge(self, gauge, weight):
-        return self.gauge_controller.add_gauge(gauge, 0, weight, {"from": self.deployer, "gas": 5000000})
+        return self.gauge_controller.add_gauge(
+            gauge,
+            0,
+            weight,
+            {"from": self.deployer, "gas": 5000000, "priority_fee": chain.priority_fee},
+        )
 
     @classmethod
     def deploy(cls, lix, registry, deployer):
-        escrow = VotingEscrow.deploy(registry, lix, "Vote-escrowed LIX", "veLIX", "veLIX_0.99", {"from": deployer})
-        # fee_distributor = FeeDistributor.deploy(escrow, 0, lix, fee_dist_admin, emergency_return, {"from": deployer})
-        gauge_controller = GaugeController.deploy(registry, lix, escrow, {"from": deployer})
-        lix_distributor = LixDistributor.deploy(lix, gauge_controller, registry, {"from": deployer}) # should I 
-        
-        gauge_controller.add_type(b"Vaults", {"from": deployer})
-        gauge_controller.change_type_weight(0, 10 ** 18, {"from": deployer})
+        escrow = VotingEscrow.deploy(
+            registry,
+            lix,
+            "Vote-escrowed LIX",
+            "veLIX",
+            "veLIX_0.99",
+            {"from": deployer, "priority_fee": chain.priority_fee},
+        )
+        # fee_distributor = FeeDistributor.deploy(escrow, 0, lix, fee_dist_admin, emergency_return, {"from": deployer, "priority_fee": chain.priority_fee})
+        gauge_controller = GaugeController.deploy(
+            registry, lix, escrow, {"from": deployer, "priority_fee": chain.priority_fee}
+        )
+        lix_distributor = LixDistributor.deploy(
+            lix, gauge_controller, registry, {"from": deployer, "priority_fee": chain.priority_fee}
+        )  # should I
+
+        gauge_controller.add_type(b"Vaults", {"from": deployer, "priority_fee": chain.priority_fee})
+        gauge_controller.change_type_weight(
+            0, 10 ** 18, {"from": deployer, "priority_fee": chain.priority_fee}
+        )
         # lix.approve(distributor, 6000000, {"from": deployer})
         # distributor.set_initial_params(6000000, {"from": deployer})
         dep_config = StakingDependenciesConfig(lix, registry)
-        staking_config = StakingSystemConfig(
-            escrow,
-            None,
-            gauge_controller,
-            lix_distributor
-        )
-        
-        return StakingSystem(cls.__create_key, deployer, dep_config, staking_config)
+        staking_config = StakingSystemConfig(escrow, None, gauge_controller, lix_distributor)
 
+        return StakingSystem(cls.__create_key, deployer, dep_config, staking_config)
 
     @classmethod
     def connect(
@@ -99,17 +115,16 @@ class StakingSystem:
             dep_config,
             StakingSystemConfig(
                 escrow=VotingEscrow.at(config.escrow),
-                fee_distributor=FeeDistributor.at(config.fee_distributor) if config.fee_distributor else None,
+                fee_distributor=FeeDistributor.at(config.fee_distributor)
+                if config.fee_distributor
+                else None,
                 gauge_controller=GaugeController.at(config.gauge_controller),
                 lix_distributor=LixDistributor.at(config.lix_distributor),
             ),
         )
 
-
     @classmethod
-    def load(
-        cls, deployer, dependencies_file_path, system_file_path
-    ):
+    def load(cls, deployer, dependencies_file_path, system_file_path):
         deps = load_dependencies(dependencies_file_path)
         f = open(system_file_path, "r")
         system_config = json.loads(f.read())
@@ -123,7 +138,6 @@ class StakingSystem:
         return cls.connect(deployer, deps, system)
 
 
-
 mnem_accounts = accounts.from_mnemonic(os.getenv("MNEMONIC"), 10)
 
 
@@ -133,10 +147,11 @@ def try_get_signer(account):
     except:
         return account
 
+
 def get_deployer():
     network = chain_to_name[chain.id]
     if network == "ganache":
-            return accounts[0]
+        return accounts[0]
     f = open(f"deploy_config_{network}.json", "r")
     deploy_config = json.loads(f.read())
     f.close()
@@ -150,17 +165,15 @@ def connect_dependencies(dep_config: StakingDependenciesConfig):
     lix_artifact = json.loads(f.read())
     f.close()
     lix = Contract.from_abi("LIX", lix_address, lix_artifact["abi"])
-    
+
     if registry_address:
         f = open("build/contracts/LixirRegistry.json", "r")
         registry_artifact = json.loads(f.read())
         f.close()
-        registry = Contract.from_abi(
-            "LixirRegistry", registry_address, registry_artifact["abi"]
-        )
+        registry = Contract.from_abi("LixirRegistry", registry_address, registry_artifact["abi"])
     else:
         registry = None
-    
+
     return StakingDependenciesConfig(lix, registry)
 
 
