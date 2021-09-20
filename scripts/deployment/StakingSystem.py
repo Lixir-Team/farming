@@ -58,7 +58,7 @@ class StakingSystem:
 
 
     def deploy_gauge(self, lp_token):
-        return VaultGauge.deploy(lp_token, self.lix_distributor, self.gauge_admin, {"from": self.deployer, "gas": 5000000})
+        return VaultGauge.deploy(lp_token, self.lix_distributor, self.deployer, {"from": self.deployer, "gas": 5000000})
 
 
     def add_gauge(self, gauge, weight):
