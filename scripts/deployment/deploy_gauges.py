@@ -30,7 +30,7 @@ def deploy_gauges():
     for sym, vault in vaults.items():
         print(f"Deploying gauge for {sym}")
         gauge = system.deploy_gauge(vault["address"])
-        system.add_gauge(gauge, vault["gauge"])
+        system.add_gauge(gauge, vault["weight"])
         gauges.append(gauge)
         gauge_addresses[sym] = {
             "vault": vault["address"],
