@@ -345,7 +345,7 @@ def _deposit_for(_addr: address, _value: uint256, unlock_time: uint256, locked_b
     self._checkpoint(_addr, old_locked, _locked)
 
     if _value != 0:
-        assert ERC20(self.token).transferFrom(_addr, self, _value)
+        assert ERC20(self.token).transferFrom(msg.sender, self, _value)
 
     log Deposit(_addr, _value, _locked.end, type, block.timestamp)
     log Supply(supply_before, supply_before + _value)
@@ -366,6 +366,8 @@ def deposit_for(_addr: address, _value: uint256):
     @notice Deposit `_value` tokens for `_addr` and add to the lock
     @dev Anyone (even a smart contract) can deposit for someone else, but
          cannot extend their locktime and deposit for a brand new user
+         N.B. Different from curve, this withdraws tokens from msg.sender
+         so we don't break infinite approvals
     @param _addr User's wallet address
     @param _value Amount to add to user's lock
     """
