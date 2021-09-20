@@ -40,7 +40,7 @@ INITIAL_RATE: constant(uint256) = 759720 * 10 ** 18 / YEAR # .32LIX/block
 RATE_REDUCTION_TIME: constant(uint256) = YEAR
 RATE_REDUCTION_COEFFICIENT: constant(uint256) = 1153846153846153846 # 15/13 * 10 ** 18
 RATE_DENOMINATOR: constant(uint256) = 10 ** 18
-DISTRIBUTION_DELAY: constant(uint256) = 86400
+DISTRIBUTION_DELAY: constant(uint256) = 3600
 
 # Supply variables
 initial_supply: public(uint256)
