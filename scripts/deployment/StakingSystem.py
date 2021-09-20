@@ -15,6 +15,9 @@ from brownie import (
 from brownie.network.contract import Contract
 from brownie.network import accounts
 from .helpers.chain_to_name import chain_to_name
+from dotenv import load_dotenv
+
+load_dotenv()
 import os
 
 StakingDependenciesConfig = namedtuple("LixirDependenciesConfig", ["lix", "registry"])
