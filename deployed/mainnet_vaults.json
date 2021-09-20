@@ -1,14 +1,14 @@
 {
   "lv_WBTC-WETH": {
-    "address": "0xC90e12798d3bd96D89Ddb8240B602616163Bcb3f",
+    "address": "0x4F8bbBa12C919d1Cc17E592b9526f2b6E13c892b",
     "weight": 20000000000000000000
   },
   "lv_WETH-USDC": {
-    "address": "0x51b980E7108186bB3f60D341C5a3D6058E6aAd54",
+    "address": "0x0084B08552Cfb411b2aCB63ac913A88dd1cAF771",
     "weight": 30000000000000000000
   },
   "lv_LIX-WETH": {
-    "address": "0x1D2E020e6Eee9702e5a0a976cA1c62aB4cD8dBb5",
+    "address": "0x02a377F49dfF07978c47696cA7997dA148e3156B",
     "weight": 50000000000000000000
   }
 }
